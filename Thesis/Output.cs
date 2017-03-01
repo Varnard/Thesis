@@ -14,17 +14,28 @@ namespace Thesis
             List<String> output = new List<string>();
             int featureNumber = constraints.First().Length;
 
+            output.Add("Variables");
+            for (int i = 1; i < featureNumber; i++)
+            {
+                output.Add("x" + i +" in [-100,100];");
+            }
+            output.Add("Minimize");
+            output.Add("x2");
+
+            output.Add("Constraints");
+
             foreach (var variables in constraints)
             {
-                String constraint = "";
-                for (int i = 0; i < featureNumber; i++)
-                {
-                    constraint += (Math.Round(variables[i], 2) + " x" + i + " + ");
-                }
-                constraint += (Math.Round(variables.Last(), 2) + " x" + featureNumber);
+                string constraint = Math.Round(variables[0]).ToString();
 
-                output.Add(constraint);
+                for (int i = 1; i < featureNumber; i++)
+                {
+                    constraint += (" + " + Math.Round(variables[i], 2) + "*x" + i);
+                }        
+                constraint += ">=0;";                
+                output.Add(constraint.Replace(",", "."));
             }
+            output.Add("end");
             System.IO.File.WriteAllLines(@"D:\Varn\Documents\Visual Studio 2015\Projects\Thesis\Thesis\model.txt", output);
 
         }
@@ -36,11 +47,11 @@ namespace Thesis
             foreach (var variables in constraints)
             {
                 String constraint = "";
-                for (int i = 0; i < featureNumber; i++)
+                for (int i = 0; i < featureNumber-1; i++)
                 {
                     Console.Out.Write(Math.Round(variables[i], 2) + " x" + i + " + ");
                 }
-                Console.Out.WriteLine(Math.Round(variables.Last(), 2) + " x" + featureNumber);
+                Console.Out.WriteLine(Math.Round(variables.Last(), 2) + " x" + (featureNumber-1));
 
             }
         }
