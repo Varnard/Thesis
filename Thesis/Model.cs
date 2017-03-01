@@ -64,7 +64,8 @@ namespace Thesis
                     SVM.Add(teacher.Learn(inputs.ToArray(), outputs.ToArray()));
                 } catch (Exception e)
                 {
-                    Console.Out.Write(e.Message);
+                    Console.Out.WriteLine(e.Message);
+
                 }
             }
         }
@@ -94,7 +95,7 @@ namespace Thesis
 
         public List<double[]> GetMathModel() 
         {
-            List<double[]> models = new List<double[]>();
+            List<double[]> models = new List<double[]>();            
 
             foreach (var svm in SVM)
             {
@@ -114,15 +115,10 @@ namespace Thesis
                         sum += weights[j] * supportVectors[j][i];
                     variables[i + 1] = sum;
                 }
-                for (int i = 0; i < featureNumber; i++)
-                {
-                    Console.Out.Write(Math.Round(variables[i],2) + " x"+i+" + ");
-                }
-                Console.Out.Write(Math.Round(variables.Last(), 2) + " x" + featureNumber);
-
-                Console.Out.WriteLine();
+                
                 models.Add(variables);
             }
+           
             return models;
         }
     }

@@ -42,7 +42,9 @@ namespace Thesis
             ScatterplotBox.Show("Expected results", inputs, outputs);
             ScatterplotBox.Show("GaussianSVM results", inputs, answers);
 
-            model.GetMathModel();
+            var constraints = model.GetMathModel();
+            Output.toConsole(constraints);
+            Output.toFile(constraints);
 
             Console.ReadKey();
         }
