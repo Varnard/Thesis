@@ -36,7 +36,8 @@ namespace Thesis
                 output.Add(constraint.Replace(",", "."));
             }
             output.Add("end");
-            System.IO.File.WriteAllLines(@"D:\Varn\Documents\Visual Studio 2015\Projects\Thesis\Thesis\model.txt", output);
+            //System.IO.File.WriteAllLines(@"D:\Varn\Documents\Visual Studio 2015\Projects\Thesis\Thesis\model.txt", output);
+            System.IO.File.WriteAllLines(@"C:\Users\Varnard\Documents\Visual Studio 2015\Projects\Thesis\ibex\model.txt", output);
 
         }
 

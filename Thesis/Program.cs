@@ -9,6 +9,8 @@ using Accord.MachineLearning.VectorMachines.Learning;
 using Accord.Math;
 using Accord.Statistics.Kernels;
 
+
+//gurobi
 namespace Thesis
 {
     class Program
@@ -23,28 +25,15 @@ namespace Thesis
             var outputs = data.Y;
 
             //ClusterWizard cluster = new SingleClusterWizard(data);
-            ClusterWizard cluster = new KMeansClusterWizard(8, data);
+            ClusterWizard cluster = new KMeansClusterWizard(20, data);
 
             Model model = new Model(cluster);
-
-            // Classify the samples using the model
-            bool[] decisions = model.Decide(inputs);
-
-
-            int[] answers = new int[decisions.Length]; 
-
-            for (int i=0;i<decisions.Length;i++) {
-                if (decisions[i]) answers[i] = 1;
-                else answers[i] = -1;
-            }
-
-            // Plot the results
-            ScatterplotBox.Show("Expected results", inputs, outputs);
-            ScatterplotBox.Show("GaussianSVM results", inputs, answers);
 
             var constraints = model.GetMathModel();
             Output.toConsole(constraints);
             Output.toFile(constraints);
+
+            new Visualization(cluster, model).showResults();
 
             Console.ReadKey();
         }

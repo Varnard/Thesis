@@ -36,6 +36,16 @@ namespace Thesis
             return positives;
         }
 
+        public double[][] getAll()
+        {
+            List<double[]> all = new List<double[]>();
+
+            all.AddRange(positives);
+            all.AddRange(negatives);
+
+            return all.ToArray();
+        }
+
         public abstract List<double[][]> clusterNegatives();
 
     }

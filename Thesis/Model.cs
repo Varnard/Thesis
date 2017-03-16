@@ -10,7 +10,7 @@ using Accord.Statistics.Kernels;
 
 namespace Thesis
 {
-    class Model
+    public class Model
     {
         private List<SupportVectorMachine<Linear>> SVM;
 
@@ -24,12 +24,18 @@ namespace Thesis
 
             foreach (double[][] negSamples in negList)
             {
+                //var teacher = new LinearNewtonMethod()
+                //{
+                //    UseComplexityHeuristic = false,
+                //    Complexity = 100,
+
+                //};
 
                 var teacher = new SequentialMinimalOptimization<Linear>()
                 {
                     UseComplexityHeuristic = false,
-                    Complexity = 1
-
+                    Complexity = 100,
+                    Strategy = SelectionStrategy.WorstPair
                 };
 
                 List<double[]> inputs = new List<double[]>();
@@ -57,8 +63,6 @@ namespace Thesis
                     else answers[i] = -1;
                 }
 
-                ScatterplotBox.Show("SVM learns", inputs.ToArray(), answers);
-
                 try
                 {
                     SVM.Add(teacher.Learn(inputs.ToArray(), outputs.ToArray()));
@@ -79,7 +83,7 @@ namespace Thesis
                 List<bool> results = new List<bool>(); ;
                 foreach (var classifer in SVM)
                 {
-                    results.Add(classifer.Decide(inputs[i]));
+                    results.Add(classifer.Decide(inputs[i]));                
                 }
                 bool result = true;
 
@@ -90,6 +94,26 @@ namespace Thesis
                 output[i] = result;
             }
 
+            return output;
+        }
+
+        public bool Decide(double[] input)
+        {
+            bool output;
+
+                List<bool> results = new List<bool>(); ;
+                foreach (var classifer in SVM)
+                {
+                    results.Add(classifer.Decide(input));
+                }
+                bool result = true;
+
+                foreach (bool partialResult in results)
+                {
+                    if (partialResult == false) result = false;
+                }
+                output = result;
+           
             return output;
         }
 
