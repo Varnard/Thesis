@@ -83,10 +83,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Globals.cs" />
     <Compile Include="ClusterWizard.cs" />
     <Compile Include="Data.cs" />
     <Compile Include="DataProvider.cs" />
     <Compile Include="KMeansClusterWizard.cs" />
+    <Compile Include="MersenneTwister.cs" />
     <Compile Include="Model.cs" />
     <Compile Include="Output.cs" />
     <Compile Include="Program.cs" />

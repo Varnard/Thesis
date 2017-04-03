@@ -8,6 +8,7 @@ using Accord.MachineLearning.VectorMachines;
 using Accord.MachineLearning.VectorMachines.Learning;
 using Accord.Math;
 using Accord.Statistics.Kernels;
+using Modeling.Utils;
 
 
 //gurobi
@@ -18,6 +19,8 @@ namespace Thesis
         [MTAThread]
         static void Main(string[] args)
         {
+            DataProvider.Random = MersenneTwister.Instance;
+
             //Data data = DataProvider.getSingleLineData();
             //Data data = DataProvider.getDoubleLinesData();
             Data data = DataProvider.getMultipleLinesData();

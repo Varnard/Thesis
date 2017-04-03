@@ -8,7 +8,7 @@ namespace Thesis
 {
     public static class DataProvider
     {
-        private static Random random = new Random(576);
+        public static Random Random { get; set; }   
 
     public static Data getSingleLineData() {
 
@@ -18,7 +18,7 @@ namespace Thesis
 
             for (int i = 0; i < n; i++)
             {
-                X[i] = new double[2] { random.NextDouble() * 100, random.NextDouble() * 100 };
+                X[i] = new double[2] { Random.NextDouble() * 100, Random.NextDouble() * 100 };
             }
 
             int[] Y = new int[n];
@@ -42,7 +42,7 @@ namespace Thesis
 
             for (int i = 0; i < n; i++)
             {
-                X[i] = new double[2] { random.NextDouble() * 100, random.NextDouble() * 100 };
+                X[i] = new double[2] { Random.NextDouble() * 100, Random.NextDouble() * 100 };
             }
 
             int[] Y = new int[n];
@@ -64,7 +64,7 @@ namespace Thesis
 
             for (int i = 0; i < n; i++)
             {
-                X[i] = new double[2] { random.NextDouble() * 100, random.NextDouble() * 100 };
+                X[i] = new double[2] { Random.NextDouble() * 100, Random.NextDouble() * 100 };
             }
 
             int[] Y = new int[n];
@@ -91,7 +91,7 @@ namespace Thesis
 
             for (int i = 0; i < n; i++)
             {
-                X[i] = new double[2] { random.NextDouble() * 100, random.NextDouble() * 100 };
+                X[i] = new double[2] { Random.NextDouble() * 100, Random.NextDouble() * 100 };
             }
 
             int[] Y = new int[n];
