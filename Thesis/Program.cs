@@ -29,11 +29,16 @@ namespace Thesis
 
             Model model = new Model(cluster);
 
+            Console.Out.WriteLine(new Statistics(data, model.Decide(inputs)).getMeasures());
+
             var constraints = model.GetMathModel();
+            
             Output.toConsole(constraints);
             Output.toFile(constraints);
 
             new Visualization(cluster, model).showResults();
+
+            
 
             Console.ReadKey();
         }
