@@ -25,20 +25,29 @@ namespace Thesis
             var outputs = data.Y;
 
             //ClusterWizard cluster = new SingleClusterWizard(data);
-            ClusterWizard cluster = new KMeansClusterWizard(20, data);
+            ClusterWizard cluster = new KMeansClusterWizard(30, data);
 
             Model model = new Model(cluster);
-
-            Console.Out.WriteLine(new Statistics(data, model.Decide(inputs)).getMeasures());
 
             var constraints = model.GetMathModel();
             
             Output.toConsole(constraints);
             Output.toFile(constraints);
-
             new Visualization(cluster, model).showResults();
 
+            var refPoints = DataProvider.getRefinementPoints();
+            var refinedModel = new Model(Refiner.removeRedundant(model.SVM, DataProvider.getRefinementPoints()));
+            new Visualization(new SingleClusterWizard(refPoints), refinedModel).showResults();
+
+            Console.Out.WriteLine("\nRefined: ");
+            Output.toConsole(refinedModel.GetMathModel());
+
             
+            Console.Out.WriteLine("\nMeasures: ");
+            Console.Out.WriteLine(new Statistics(data, model.Decide(inputs)).getMeasures());
+
+            new Visualization(cluster, refinedModel).showResults();
+
 
             Console.ReadKey();
         }

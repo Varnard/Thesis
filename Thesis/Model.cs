@@ -12,8 +12,12 @@ namespace Thesis
 {
     public class Model
     {
-        private List<SupportVectorMachine<Linear>> SVM;
+        public List<SupportVectorMachine<Linear>> SVM { get; }
 
+        public Model(List<SupportVectorMachine<Linear>> svm)
+        {
+            this.SVM = svm;
+        }
 
         public Model(ClusterWizard cluster)
         {

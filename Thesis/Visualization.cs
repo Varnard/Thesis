@@ -142,11 +142,7 @@ namespace Thesis
             afterPlot.Model.Series.Add(svmPositiveSeries);
             afterPlot.Model.Series.Add(svmNegativeSeries);
 
-            foreach (var constraint in model.GetMathModel())
-            {
-                afterPlot.Model.Series.Add(new FunctionSeries(x => (x * constraint[1] + constraint[0]) / -constraint[2],0,100,0.2));
-                comparisonPlot.Model.Series.Add(new FunctionSeries(x => (x * constraint[1] + constraint[0]) / -constraint[2], 0, 100, 0.2));
-            }
+
 
             var comparisonPositiveSeries = new ScatterSeries { MarkerType = MarkerType.Circle, ColorAxisKey = "zeroOneColors" };
             foreach (var point in input.getPositives())
@@ -165,6 +161,12 @@ namespace Thesis
 
             comparisonPlot.Model.Series.Add(comparisonNegativeSeries);
             comparisonPlot.Model.Series.Add(comparisonPositiveSeries);
+
+            foreach (var constraint in model.GetMathModel())
+            {
+                afterPlot.Model.Series.Add(new FunctionSeries(x => (x * constraint[1] + constraint[0]) / -constraint[2], 0, 100, 0.2));
+                comparisonPlot.Model.Series.Add(new FunctionSeries(x => (x * constraint[1] + constraint[0]) / -constraint[2], 0, 100, 0.2));
+            }
 
             Application.Run(form);
         }
