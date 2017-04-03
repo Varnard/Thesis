@@ -12,6 +12,8 @@ namespace Thesis
         int FP { get; }
         int TN { get; }
         int FN { get; }
+        double posJaccard { get; }
+        double negJaccard { get; }
 
 
         public Statistics(Data original, bool[] decisions) 
@@ -21,33 +23,47 @@ namespace Thesis
             TN = 0;
             FN = 0;
 
-            for (int i = 0; i < decisions.Length; i++)
-            {
-                bool[] correct = original.getYAsBool();
+            int posJacDenominator=0;
+            int posJacNumerator=0;
+            int negJacDenominator=0;
+            int negJacNumerator=0;
 
+            bool[] correct = original.getYAsBool();
+
+            for (int i = 0; i < decisions.Length; i++)
+            {             
                 if (correct[i])
                 {
                     if (decisions[i])
                     {
                         TP++;
+                        posJacNumerator++;
                     }
                     else
                     {
                         FN++;
+                        negJacDenominator++;
                     }
+                    posJacDenominator++;
                 }
                 else
                 {
                     if (decisions[i])
                     {
                         FP++;
+                        posJacDenominator++;
                     }
                     else
                     {
                         TN++;
+                        negJacNumerator++;
                     }
+                    negJacDenominator++;
                 }
             }
+
+            posJaccard = (double)posJacNumerator / posJacDenominator;
+            negJaccard = (double)negJacNumerator / negJacDenominator;
         }
 
         public double getAccuracy()
@@ -76,7 +92,9 @@ namespace Thesis
             return "Accuracy: " + Math.Round(getAccuracy(),3) +
             "\nPrecision: " + Math.Round(getPrecision(),3) +
             "\nRecall: " + Math.Round(getRecall(),3) +
-            "\nSpecificity: " + Math.Round(getSpecificity(),3);
+            "\nSpecificity: " + Math.Round(getSpecificity(),3)+
+            "\nPositive Jaccard index: "+Math.Round(posJaccard,3) +
+            "\nNegative Jaccard index: " + Math.Round(negJaccard, 3);
         }
 
     }
