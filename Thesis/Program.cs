@@ -63,9 +63,14 @@ namespace Thesis
             stats.saveMeasures(experiment);
 
 
-            new Visualization(cluster, model).showResults();
-            //new Visualization(new SingleClusterWizard(refPoints), refinedModel).showResults();
-            new Visualization(cluster, refinedModel).showResults();
+            new Visualization(cluster, model)             
+                .addModelPlot(cluster, model, false)
+                .addModelPlot(cluster, refinedModel, false)
+                .Show();
+
+
+            ////new Visualization(new SingleClusterWizard(refPoints), refinedModel).showResults();
+            //new Visualization(cluster, refinedModel).showResults();
 
 
 

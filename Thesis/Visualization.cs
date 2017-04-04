@@ -14,73 +14,59 @@ namespace Thesis
 {
     public class Visualization
     {
-        ClusterWizard input;
-        Model model;
-        Form form;
-        PlotView beforePlot;
-        PlotView afterPlot;
-        PlotView comparisonPlot;
+        List<PlotView> plotList;
 
 
         public Visualization(ClusterWizard input, Model model) {
-            this.input = input;
-            this.model = model;
-            form = new Form()
-            {
-                Text = "Thesis",
-                Height = 900,
-                Width = 900
-            };
 
-            beforePlot = new PlotView();
-            beforePlot.Location = new System.Drawing.Point(0, 20);
-            beforePlot.Size = new System.Drawing.Size(400, 400);
-
-            var beforeModel = new PlotModel { Title = "Data"};
-            beforeModel.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = 0, Maximum = 100 });
-            beforeModel.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = 0, Maximum = 100 });
-            beforePlot.Model = beforeModel;
-
-            afterPlot = new PlotView();
-            afterPlot.Location = new System.Drawing.Point(450, 20);
-            afterPlot.Size = new System.Drawing.Size(400, 400);
-
-            var afterModel = new PlotModel { Title = "SVM" };
-            afterModel.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = 0, Maximum = 100 });
-            afterModel.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = 0, Maximum = 100 });
-            afterPlot.Model = afterModel;
-
-            comparisonPlot = new PlotView();
-            comparisonPlot.Location = new System.Drawing.Point(0, 420);
-            comparisonPlot.Size = new System.Drawing.Size(400, 400);
-
-            var comparisonModel = new PlotModel { Title = "Comparison" };
-            comparisonModel.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = 0, Maximum = 100 });
-            comparisonModel.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = 0, Maximum = 100 });
-            comparisonPlot.Model = comparisonModel;
-
-            form.Controls.Add(beforePlot);
-            form.Controls.Add(afterPlot);
-            form.Controls.Add(comparisonPlot);
-
+            plotList = new List<PlotView>();
 
             Application.EnableVisualStyles();
 
         }
 
-        public void showResults()
+        public void Show()
         {
+
+            int c = plotList.Count;
+
+            int h = 500 + (c / 3) * 400;
+            int w;
+            if (c > 2) w = 1300;
+            else w = 100 + c*400;
+
+            var form = new Form()
+            {
+                Text = "Thesis",
+                Height = h,
+                Width = w
+            };
+
+            int i = 0;
+
+            foreach (var plot in plotList)
+            {
+                plot.Location = new System.Drawing.Point((i%3)*400, 20+(i/3)*400);
+                form.Controls.Add(plot);
+                i++;
+            }
+
+            Application.Run(form);
+        }
+
+        public Visualization addClusters(ClusterWizard input, String title=" ")
+        {
+            var plot = new PlotView();
+            plot.Size = new System.Drawing.Size(400, 400);
+
+            var model = new PlotModel { Title = title };
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = 0, Maximum = 100 });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = 0, Maximum = 100 });
+            plot.Model = model;
+
             var zeroOneAxis = new RangeColorAxis { Key = "zeroOneColors" };
             zeroOneAxis.AddRange(0, 0.1, OxyColors.Red);
             zeroOneAxis.AddRange(1, 1.1, OxyColors.ForestGreen);
-
-            var afterZeroOneAxis = new RangeColorAxis { Key = "zeroOneColors" };
-            afterZeroOneAxis.AddRange(0, 0.1, OxyColors.Red);
-            afterZeroOneAxis.AddRange(1, 1.1, OxyColors.ForestGreen);
-
-            var comparisonZeroOneAxis = new RangeColorAxis { Key = "zeroOneColors" };
-            comparisonZeroOneAxis.AddRange(0, 0.1, OxyColors.Red);
-            comparisonZeroOneAxis.AddRange(1, 1.1, OxyColors.ForestGreen);
 
             var clustersAxis = new RangeColorAxis { Key = "clustersColors" };
             clustersAxis.AddRange(0, 0.1, OxyColors.Red);
@@ -89,24 +75,19 @@ namespace Thesis
             clustersAxis.AddRange(3, 3.1, OxyColors.DarkOrange);
             clustersAxis.AddRange(4, 4.1, OxyColors.DarkRed);
             clustersAxis.AddRange(5, 5.1, OxyColors.IndianRed);
-        
-            beforePlot.Model.Axes.Add(zeroOneAxis);
-            beforePlot.Model.Axes.Add(clustersAxis);
 
-            afterPlot.Model.Axes.Add(afterZeroOneAxis);
+            plot.Model.Axes.Add(zeroOneAxis);
+            plot.Model.Axes.Add(clustersAxis);
 
-            comparisonPlot.Model.Axes.Add(comparisonZeroOneAxis);
-
-
-            var dataPositiveSeries = new ScatterSeries { MarkerType = MarkerType.Circle, ColorAxisKey = "zeroOneColors"};
+            var dataPositiveSeries = new ScatterSeries { MarkerType = MarkerType.Circle, ColorAxisKey = "zeroOneColors" };
             foreach (var point in input.getPositives())
             {
                 dataPositiveSeries.Points.Add(new ScatterPoint(point[0], point[1], 3, 1));
             }
 
-            beforePlot.Model.Series.Add(dataPositiveSeries);
+            plot.Model.Series.Add(dataPositiveSeries);
 
-            var dataNegativeSeries = new ScatterSeries { MarkerType = MarkerType.Circle , ColorAxisKey = "clustersColors" };
+            var dataNegativeSeries = new ScatterSeries { MarkerType = MarkerType.Circle, ColorAxisKey = "clustersColors" };
             int i = 0;
             foreach (var cluster in input.getNegatives())
             {
@@ -116,59 +97,92 @@ namespace Thesis
                 {
                     dataNegativeSeries.Points.Add(new ScatterPoint(point[0], point[1], 3, color));
                 }
-            }    
-
-            beforePlot.Model.Series.Add(dataNegativeSeries);
-
-
-
-
-            var svmPositiveSeries = new ScatterSeries { MarkerType = MarkerType.Circle, ColorAxisKey = "zeroOneColors" };
-            var svmNegativeSeries = new ScatterSeries { MarkerType = MarkerType.Circle, ColorAxisKey = "zeroOneColors" };
-
-            foreach (var point in input.getAll())
-            {            
-                if (model.Decide(point)) 
-                {
-                    svmPositiveSeries.Points.Add(new ScatterPoint(point[0], point[1], 3, 1));
-                } 
-                else 
-                {
-                    svmNegativeSeries.Points.Add(new ScatterPoint(point[0], point[1], 3, 0));
-                }
-
             }
 
-            afterPlot.Model.Series.Add(svmPositiveSeries);
-            afterPlot.Model.Series.Add(svmNegativeSeries);
+            plot.Model.Series.Add(dataNegativeSeries);
 
+            plotList.Add(plot);
 
+            return this;
+        }
 
-            var comparisonPositiveSeries = new ScatterSeries { MarkerType = MarkerType.Circle, ColorAxisKey = "zeroOneColors" };
-            foreach (var point in input.getPositives())
+        public Visualization addModelPlot(ClusterWizard input, Model model)
+        {
+            return addModelPlot(input, model, true, " ");
+        }
+
+        public Visualization addModelPlot(ClusterWizard input, Model model, bool modelClassLabels)
+        {
+            return addModelPlot(input, model, modelClassLabels, " ");
+        }
+
+        public Visualization addModelPlot(ClusterWizard input, Model model, string title)
+        {
+            return addModelPlot(input, model, true, title);
+        }
+
+        public Visualization addModelPlot(ClusterWizard input, Model model, bool modelClassLabels, String title)
+        {
+            
+            var plot = new PlotView();
+            plot.Location = new System.Drawing.Point(450, 20);
+            plot.Size = new System.Drawing.Size(400, 400);
+
+            var plotModel = new PlotModel { Title = "SVM" };
+            plotModel.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = 0, Maximum = 100 });
+            plotModel.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = 0, Maximum = 100 });
+            plot.Model = plotModel;
+
+            var zeroOneAxis = new RangeColorAxis { Key = "zeroOneColors" };
+            zeroOneAxis.AddRange(0, 0.1, OxyColors.Red);
+            zeroOneAxis.AddRange(1, 1.1, OxyColors.ForestGreen);
+
+            plot.Model.Axes.Add(zeroOneAxis);            
+
+            var positiveSeries = new ScatterSeries { MarkerType = MarkerType.Circle, ColorAxisKey = "zeroOneColors" };
+            var negativeSeries = new ScatterSeries { MarkerType = MarkerType.Circle, ColorAxisKey = "zeroOneColors" };
+
+            if (modelClassLabels)
             {
-                comparisonPositiveSeries.Points.Add(new ScatterPoint(point[0], point[1], 3, 1));
-            }
-
-            var comparisonNegativeSeries = new ScatterSeries { MarkerType = MarkerType.Circle, ColorAxisKey = "zeroOneColors" };
-            foreach (var cluster in input.getNegatives())
-            {
-                foreach (var point in cluster)
+                foreach (var point in input.getAll())
                 {
-                    comparisonNegativeSeries.Points.Add(new ScatterPoint(point[0], point[1], 3, 0));
+                    if (model.Decide(point))
+                    {
+                        positiveSeries.Points.Add(new ScatterPoint(point[0], point[1], 3, 1));
+                    }
+                    else
+                    {
+                        negativeSeries.Points.Add(new ScatterPoint(point[0], point[1], 3, 0));
+                    }
+                }
+            }
+            else
+            {               
+                foreach (var point in input.getPositives())
+                {
+                    positiveSeries.Points.Add(new ScatterPoint(point[0], point[1], 3, 1));
+                }
+                
+                foreach (var cluster in input.getNegatives())
+                {
+                    foreach (var point in cluster)
+                    {
+                        negativeSeries.Points.Add(new ScatterPoint(point[0], point[1], 3, 0));
+                    }
                 }
             }
 
-            comparisonPlot.Model.Series.Add(comparisonNegativeSeries);
-            comparisonPlot.Model.Series.Add(comparisonPositiveSeries);
+            plot.Model.Series.Add(positiveSeries);
+            plot.Model.Series.Add(negativeSeries);
 
             foreach (var constraint in model.GetMathModel())
             {
-                afterPlot.Model.Series.Add(new FunctionSeries(x => (x * constraint[1] + constraint[0]) / -constraint[2], 0, 100, 0.2));
-                comparisonPlot.Model.Series.Add(new FunctionSeries(x => (x * constraint[1] + constraint[0]) / -constraint[2], 0, 100, 0.2));
+                plot.Model.Series.Add(new FunctionSeries(x => (x * constraint[1] + constraint[0]) / -constraint[2], 0, 100, 0.2));                
             }
 
-            Application.Run(form);
+            plotList.Add(plot);
+
+            return this;
         }
     }
 }
