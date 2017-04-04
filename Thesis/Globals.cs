@@ -9,5 +9,6 @@ namespace Thesis
     public static class Globals
     {
         static public int seed { get; set; } = 1;
+        static public int k { get; set; } = 20;
     }
 }

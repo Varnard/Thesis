@@ -9,7 +9,7 @@ namespace Thesis
     public static class Output
     {
 
-        public static void toFile(List<double[]> constraints)
+        public static void ToFile(List<double[]> constraints)
         {
             List<String> output = new List<string>();
             int featureNumber = constraints.First().Length;
@@ -41,13 +41,12 @@ namespace Thesis
 
         }
 
-        public static void toConsole(List<double[]> constraints)
+        public static void ToConsole(List<double[]> constraints)
         {
             int featureNumber = constraints.First().Length;
 
             foreach (var variables in constraints)
             {
-                String constraint = "";
                 for (int i = 0; i < featureNumber-1; i++)
                 {
                     Console.Out.Write(Math.Round(variables[i], 2) + " x" + i + " + ");
@@ -55,6 +54,23 @@ namespace Thesis
                 Console.Out.WriteLine(Math.Round(variables.Last(), 2) + " x" + (featureNumber-1));
 
             }
+        }
+
+        public static string ToString(List<double[]> constraints)
+        {
+            int featureNumber = constraints.First().Length;
+            var sb = new StringBuilder();
+
+            foreach (var variables in constraints)
+            {
+                for (int i = 0; i < featureNumber - 1; i++)
+                {
+                    sb.Append(Math.Round(variables[i], 2) + " x" + i + " + ");
+                }
+               sb.AppendLine(Math.Round(variables.Last(), 2) + " x" + (featureNumber - 1));
+
+            }
+            return sb.ToString();
         }
     }
 }

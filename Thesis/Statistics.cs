@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ExperimentDatabase;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -97,5 +98,16 @@ namespace Thesis
             "\nNegative Jaccard index: " + Math.Round(negJaccard, 3);
         }
 
+        public void saveMeasures(Experiment experiment)
+        {
+            experiment.Add("Positive_Jaccard_index", Math.Round(posJaccard, 3));
+            experiment.Add("Negative_Jaccard_index", Math.Round(negJaccard, 3));
+            experiment.Add("Accuracy", Math.Round(getAccuracy(), 3));
+            experiment.Add("Precision", Math.Round(getPrecision(), 3));
+            experiment.Add("Recall", Math.Round(getRecall(), 3));
+            experiment.Add("Specificity", Math.Round(getSpecificity(), 3));
+            experiment.Save();
+
+        }
     }
 }

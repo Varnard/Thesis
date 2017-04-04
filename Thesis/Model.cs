@@ -7,6 +7,7 @@ using Accord.Controls;
 using Accord.MachineLearning.VectorMachines;
 using Accord.MachineLearning.VectorMachines.Learning;
 using Accord.Statistics.Kernels;
+using ExperimentDatabase;
 
 namespace Thesis
 {
@@ -148,6 +149,18 @@ namespace Thesis
             }
            
             return models;
+        }
+
+        public int CountConstraints()
+        {
+            return SVM.Count;
+        }
+
+        public void SaveModel(Experiment experiment)
+        {
+            experiment.Add("constraint_count", CountConstraints());
+            experiment.Add("constraints", Output.ToString(GetMathModel()));
+            experiment.Save();
         }
     }
 }
