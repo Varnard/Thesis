@@ -26,6 +26,12 @@ namespace Thesis
             positives = pos.ToArray();
         }
 
+        public ClusterWizard(double[][] negatives, double[][]positives)
+        {
+            this.negatives = negatives;
+            this.positives = positives;
+        }
+
         public List<double[][]> getNegatives()
         {
             return clusterNegatives();

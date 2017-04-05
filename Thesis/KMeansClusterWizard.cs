@@ -16,6 +16,11 @@ namespace Thesis
             this.k = k;
         }
 
+        public KMeansClusterWizard(int k, double[][] negatives, double[][] positives) : base(negatives,positives)
+        {
+            this.k = k;
+        }
+
         public override List<double[][]> clusterNegatives()
         {
             KMeans kmeans = new KMeans(k);

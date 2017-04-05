@@ -17,7 +17,7 @@ namespace Thesis
         List<PlotView> plotList;
 
 
-        public Visualization(ClusterWizard input, Model model) {
+        public Visualization() {
 
             plotList = new List<PlotView>();
 
@@ -30,7 +30,7 @@ namespace Thesis
 
             int c = plotList.Count;
 
-            int h = 500 + (c / 3) * 400;
+            int h = 500 + ((c-1) / 3) * 400;
             int w;
             if (c > 2) w = 1300;
             else w = 100 + c*400;

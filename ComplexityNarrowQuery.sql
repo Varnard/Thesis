@@ -1,0 +1,10 @@
+SELECT Complexity,AVG(experiments.Positive_Jaccard_index),AVG(experiments.Negative_Jaccard_index) from experiments where experiments.Complexity=0.001 and id>800 UNION
+SELECT Complexity,AVG(experiments.Positive_Jaccard_index),AVG(experiments.Negative_Jaccard_index) from experiments where experiments.Complexity=0.002 and id>800 UNION
+SELECT Complexity,AVG(experiments.Positive_Jaccard_index),AVG(experiments.Negative_Jaccard_index) from experiments where experiments.Complexity=0.003 and id>800 UNION
+SELECT Complexity,AVG(experiments.Positive_Jaccard_index),AVG(experiments.Negative_Jaccard_index) from experiments where experiments.Complexity=0.004 and id>800 UNION
+SELECT Complexity,AVG(experiments.Positive_Jaccard_index),AVG(experiments.Negative_Jaccard_index) from experiments where experiments.Complexity=0.005 and id>800 UNION
+SELECT Complexity,AVG(experiments.Positive_Jaccard_index),AVG(experiments.Negative_Jaccard_index) from experiments where experiments.Complexity=0.006 and id>800 UNION
+SELECT Complexity,AVG(experiments.Positive_Jaccard_index),AVG(experiments.Negative_Jaccard_index) from experiments where experiments.Complexity=0.007 and id>800 UNION
+SELECT Complexity,AVG(experiments.Positive_Jaccard_index),AVG(experiments.Negative_Jaccard_index) from experiments where experiments.Complexity=0.008 and id>800 UNION
+SELECT Complexity,AVG(experiments.Positive_Jaccard_index),AVG(experiments.Negative_Jaccard_index) from experiments where experiments.Complexity=0.009 and id>800 UNION
+SELECT Complexity,AVG(experiments.Positive_Jaccard_index),AVG(experiments.Negative_Jaccard_index) from experiments where experiments.Complexity=0.01 and id>800

@@ -20,31 +20,39 @@ namespace Thesis
         [MTAThread]
         static void Main(string[] args)
         {
+            var database = new Database("test.db");
+
+            Globals.k = 60;
+
             DataProvider.Random = MersenneTwister.Instance;
 
-            var database = new Database("test.db");
+
             var experiment = database.NewExperiment();
 
             experiment.Add("seed", Globals.seed);
             experiment.Add("K", Globals.k);
+            experiment.Add("Tolerance", Globals.tolerance);
+            experiment.Add("Complexity", Globals.complexity);
             experiment.Save();
 
             //Data data = DataProvider.getSingleLineData();
             //Data data = DataProvider.getDoubleLinesData();
             Data data = DataProvider.getMultipleLinesData();
+            //Data data = DataProvider.getCircleData();
+
             var inputs = data.X;
             var outputs = data.Y;
 
             //ClusterWizard cluster = new SingleClusterWizard(data);
             ClusterWizard cluster = new KMeansClusterWizard(Globals.k, data);
 
-            Model model = new Model(cluster);
+            Model model = new Model(cluster, Globals.tolerance, Globals.complexity);
 
             var constraints = model.GetMathModel();
-            
-            Output.ToConsole(constraints);
-            Output.ToFile(constraints);
-            
+
+            //Output.ToConsole(constraints);
+            //Output.ToFile(constraints);
+
 
             var refPoints = DataProvider.getRefinementPoints();
             var refinedModel = new Model(Refiner.removeRedundant(model.SVM, DataProvider.getRefinementPoints()));
@@ -62,19 +70,16 @@ namespace Thesis
 
             stats.saveMeasures(experiment);
 
-
-            new Visualization(cluster, model)             
+            new Visualization()
+                .addModelPlot(cluster, model)
                 .addModelPlot(cluster, model, false)
-                .addModelPlot(cluster, refinedModel, false)
                 .Show();
 
-
-            ////new Visualization(new SingleClusterWizard(refPoints), refinedModel).showResults();
-            //new Visualization(cluster, refinedModel).showResults();
-
-
-
             Console.ReadKey();
+
+
         }
+
+
     }
 }

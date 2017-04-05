@@ -20,7 +20,7 @@ namespace Thesis
             this.SVM = svm;
         }
 
-        public Model(ClusterWizard cluster)
+        public Model(ClusterWizard cluster, double tolerance, double complexity)
         {
             SVM = new List<SupportVectorMachine<Linear>>();
 
@@ -29,19 +29,14 @@ namespace Thesis
 
             foreach (double[][] negSamples in negList)
             {
-                //var teacher = new LinearNewtonMethod()
-                //{
-                //    UseComplexityHeuristic = false,
-                //    Complexity = 100,
-
-                //};
-
                 var teacher = new SequentialMinimalOptimization<Linear>()
                 {
                     UseComplexityHeuristic = false,
-                    Complexity = 100,
-                    Strategy = SelectionStrategy.WorstPair
+                    Strategy = SelectionStrategy.WorstPair                    
                 };
+
+                teacher.Complexity = complexity;
+                teacher.Tolerance = tolerance;
 
                 List<double[]> inputs = new List<double[]>();
                 List<bool> outputs = new List<bool>();

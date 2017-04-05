@@ -12,6 +12,10 @@ namespace Thesis
         {
         }
 
+        public SingleClusterWizard(double[][] negatives, double[][] positives) : base(negatives,positives)
+        {
+        }
+
         public override List<double[][]> clusterNegatives()
         {
             List<double[][]> temp = new List<double[][]>();

@@ -1,0 +1,2 @@
+SELECT Tolerance,AVG(experiments.Positive_Jaccard_index),AVG(experiments.Negative_Jaccard_index) from experiments where experiments.Tolerance=0.001 UNION
+SELECT Tolerance,AVG(experiments.Positive_Jaccard_index),AVG(experiments.Negative_Jaccard_index) from experiments where experiments.Tolerance=0.5

@@ -31,8 +31,6 @@ namespace Thesis
             return new Data(X, Y);
     }
 
-
-
         public static Data getDoubleLinesData()
         {
 
@@ -78,6 +76,27 @@ namespace Thesis
                 X[i][0] < X[i][1] + 30 &&
                 X[i][0] > -X[i][1]+60
                 ) Y[i] = 1;
+            }
+
+            return new Data(X, Y);
+        }
+
+        public static Data getCircleData()
+        {
+            int n = 1000;
+
+            double[][] X = new double[n][];
+
+            for (int i = 0; i < n; i++)
+            {
+                X[i] = new double[2] { Random.NextDouble() * 100, Random.NextDouble() * 100 };
+            }
+
+            int[] Y = new int[n];
+
+            for (int i = 0; i < n; i++)
+            {
+                if (Math.Pow(X[i][0]-40,2) + Math.Pow(X[i][1]-40, 2) < Math.Pow(30, 2)) Y[i] = 1;
             }
 
             return new Data(X, Y);
