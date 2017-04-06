@@ -53,7 +53,6 @@ namespace Thesis
             //Output.ToConsole(constraints);
             //Output.ToFile(constraints);
 
-
             var refPoints = DataProvider.getRefinementPoints();
             var refinedModel = new Model(Refiner.removeRedundant(model.SVM, DataProvider.getRefinementPoints()));
 
