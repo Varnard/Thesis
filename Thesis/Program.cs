@@ -25,7 +25,7 @@ namespace Thesis
             var experiment = database.NewExperiment();
 
 
-            Globals.k = 60;        
+            Globals.k = 60;
 
             Globals.Save(experiment);
 
@@ -47,30 +47,39 @@ namespace Thesis
 
             var refPoints = DataProvider.getRefinementPoints();
             var refinedModel = Refiner.removeRedundant(model);
+            var refined2Model = Refiner.removeSimiliar(refinedModel);
 
-            refinedModel.Save(experiment);      
+            refined2Model.Save(experiment);
 
             Console.Out.WriteLine("\nRefined: ");
-            Output.ToConsole(refinedModel.GetMathModel());
+            Output.ToConsole(refined2Model.GetMathModel());
 
 
             var stats = new Statistics(data, model.Decide(data.X));
 
-            Console.Out.WriteLine("\nMeasures: ");
+            Console.Out.WriteLine("\nBase Measures: ");
             Console.Out.WriteLine(stats.getMeasures());
+            Console.Out.WriteLine("\nContraints: " + model.CountConstraints());
 
-            stats.save(experiment);
+            var stats2 = new Statistics(data, refined2Model.Decide(data.X));
 
+            Console.Out.WriteLine("\nRefined Measures: ");
+            Console.Out.WriteLine(stats2.getMeasures());
+            Console.Out.WriteLine("\nContraints k: " + refined2Model.CountConstraints());
+
+            stats2.save(experiment);
+           
 
             new Visualization()
                 .addModelPlot(cluster, model, false)
                 .addModelPlot(cluster, refinedModel, false)
+                .addModelPlot(cluster, refined2Model, false)
                 .Show();
 
 
+
+
             Console.ReadKey();
-
-
         }
     }
 }
