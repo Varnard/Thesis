@@ -98,7 +98,7 @@ namespace Thesis
             "\nNegative Jaccard index: " + Math.Round(negJaccard, 3);
         }
 
-        public void saveMeasures(Experiment experiment)
+        public void save(Experiment experiment)
         {
             experiment.Add("Positive_Jaccard_index", Math.Round(posJaccard, 3));
             experiment.Add("Negative_Jaccard_index", Math.Round(negJaccard, 3));

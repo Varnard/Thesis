@@ -10,20 +10,24 @@ namespace Thesis
 {
     public static class Refiner
     {
-        public static List<SupportVectorMachine<Linear>> removeRedundant(List<SupportVectorMachine<Linear>> SVM, Data points)
+        public static Model removeRedundant(Model model)
         {
+            var SVM = model.SVM;
+
+            var points = DataProvider.getRefinementPoints();
+
             var newSVM = new List<SupportVectorMachine<Linear>>();
 
             foreach (var svm1 in SVM)
             {
 
                 bool needed = false;
-                var asdf = new List<SupportVectorMachine<Linear>>(SVM);
-                asdf.Remove(svm1);
-                var model = new Model(asdf);
+                var rest = new List<SupportVectorMachine<Linear>>(SVM);
+                rest.Remove(svm1);
+                var reducedModel = Model.fromSVM(rest);
                 foreach (var point in points.X)
                 {
-                    if (!svm1.Decide(point) && model.Decide(point))
+                    if (!svm1.Decide(point) && reducedModel.Decide(point))
                     {
                         needed = true;
                     }
@@ -31,7 +35,7 @@ namespace Thesis
                 if (needed) newSVM.Add(svm1);
             }
 
-            return newSVM;
+            return Model.fromSVM(newSVM);
         }
     }
 }

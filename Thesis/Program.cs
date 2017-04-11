@@ -22,63 +22,55 @@ namespace Thesis
         {
             var database = new Database("test.db");
 
-            Globals.k = 60;
-
-            DataProvider.Random = MersenneTwister.Instance;
-
-
             var experiment = database.NewExperiment();
 
-            experiment.Add("seed", Globals.seed);
-            experiment.Add("K", Globals.k);
-            experiment.Add("Tolerance", Globals.tolerance);
-            experiment.Add("Complexity", Globals.complexity);
-            experiment.Save();
+
+            Globals.k = 60;        
+
+            Globals.Save(experiment);
+
+
+            DataProvider.Random = MersenneTwister.Instance;
 
             //Data data = DataProvider.getSingleLineData();
             //Data data = DataProvider.getDoubleLinesData();
             Data data = DataProvider.getMultipleLinesData();
             //Data data = DataProvider.getCircleData();
 
-            var inputs = data.X;
-            var outputs = data.Y;
 
-            //ClusterWizard cluster = new SingleClusterWizard(data);
-            ClusterWizard cluster = new KMeansClusterWizard(Globals.k, data);
+            ClusterWizard cluster = new KMeansClusterWizard(data);
 
-            Model model = new Model(cluster, Globals.tolerance, Globals.complexity);
 
+            Model model = Model.fromCluster(cluster);
             var constraints = model.GetMathModel();
 
-            //Output.ToConsole(constraints);
-            //Output.ToFile(constraints);
 
             var refPoints = DataProvider.getRefinementPoints();
-            var refinedModel = new Model(Refiner.removeRedundant(model.SVM, DataProvider.getRefinementPoints()));
+            var refinedModel = Refiner.removeRedundant(model);
 
-            refinedModel.SaveModel(experiment);
+            refinedModel.Save(experiment);      
 
             Console.Out.WriteLine("\nRefined: ");
             Output.ToConsole(refinedModel.GetMathModel());
 
-            var stats = new Statistics(data, model.Decide(inputs));
 
+            var stats = new Statistics(data, model.Decide(data.X));
 
             Console.Out.WriteLine("\nMeasures: ");
             Console.Out.WriteLine(stats.getMeasures());
 
-            stats.saveMeasures(experiment);
+            stats.save(experiment);
+
 
             new Visualization()
-                .addModelPlot(cluster, model)
                 .addModelPlot(cluster, model, false)
+                .addModelPlot(cluster, refinedModel, false)
                 .Show();
+
 
             Console.ReadKey();
 
 
         }
-
-
     }
 }

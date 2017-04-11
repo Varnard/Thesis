@@ -11,14 +11,14 @@ namespace Thesis
     {
         public int k { get; }
 
-        public KMeansClusterWizard(int k, Data data) : base(data)
+        public KMeansClusterWizard(Data data, int k) : base(data)
         {
             this.k = k;
         }
 
-        public KMeansClusterWizard(int k, double[][] negatives, double[][] positives) : base(negatives,positives)
+        public KMeansClusterWizard(Data data) : base(data)
         {
-            this.k = k;
+            this.k = Globals.k;
         }
 
         public override List<double[][]> clusterNegatives()

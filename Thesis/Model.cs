@@ -15,12 +15,28 @@ namespace Thesis
     {
         public List<SupportVectorMachine<Linear>> SVM { get; }
 
-        public Model(List<SupportVectorMachine<Linear>> svm)
+        public static Model fromSVM(List<SupportVectorMachine<Linear>> svm)
+        {
+            return new Model(svm);
+        }
+
+        public static Model fromCluster(ClusterWizard cluster, double tolerance, double complexity)
+        {
+            return new Model(cluster, tolerance, complexity);
+        }
+
+        public static Model fromCluster(ClusterWizard cluster)
+        {
+            return new Model(cluster, Globals.tolerance, Globals.complexity);
+        }
+
+
+        private Model(List<SupportVectorMachine<Linear>> svm)
         {
             this.SVM = svm;
         }
 
-        public Model(ClusterWizard cluster, double tolerance, double complexity)
+        private Model(ClusterWizard cluster, double tolerance, double complexity)
         {
             SVM = new List<SupportVectorMachine<Linear>>();
 
@@ -151,7 +167,7 @@ namespace Thesis
             return SVM.Count;
         }
 
-        public void SaveModel(Experiment experiment)
+        public void Save(Experiment experiment)
         {
             experiment.Add("constraint_count", CountConstraints());
             experiment.Add("constraints", Output.ToString(GetMathModel()));
