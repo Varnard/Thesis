@@ -43,34 +43,42 @@ namespace Thesis
 
         public static void ToConsole(List<double[]> constraints)
         {
-            int featureNumber = constraints.First().Length;
-
-            foreach (var variables in constraints)
+            if (constraints.Count == 0) Console.Out.WriteLine("empty");
+            else
             {
-                for (int i = 0; i < featureNumber-1; i++)
-                {
-                    Console.Out.Write(Math.Round(variables[i], 2) + " x" + i + " + ");
-                }
-                Console.Out.WriteLine(Math.Round(variables.Last(), 2) + " x" + (featureNumber-1));
+                int featureNumber = constraints.First().Length;
 
+                foreach (var variables in constraints)
+                {
+                    for (int i = 0; i < featureNumber - 1; i++)
+                    {
+                        Console.Out.Write(Math.Round(variables[i], 2) + " x" + i + " + ");
+                    }
+                    Console.Out.WriteLine(Math.Round(variables.Last(), 2) + " x" + (featureNumber - 1));
+
+                }
             }
         }
 
         public static string ToString(List<double[]> constraints)
         {
-            int featureNumber = constraints.First().Length;
-            var sb = new StringBuilder();
-
-            foreach (var variables in constraints)
+            if (constraints.Count == 0) return "empty";
+            else
             {
-                for (int i = 0; i < featureNumber - 1; i++)
-                {
-                    sb.Append(Math.Round(variables[i], 2) + " x" + i + " + ");
-                }
-               sb.AppendLine(Math.Round(variables.Last(), 2) + " x" + (featureNumber - 1));
+                int featureNumber = constraints.First().Length;
+                var sb = new StringBuilder();
 
+                foreach (var variables in constraints)
+                {
+                    for (int i = 0; i < featureNumber - 1; i++)
+                    {
+                        sb.Append(Math.Round(variables[i], 2) + " x" + i + " + ");
+                    }
+                    sb.AppendLine(Math.Round(variables.Last(), 2) + " x" + (featureNumber - 1));
+
+                }
+                return sb.ToString();
             }
-            return sb.ToString();
         }
     }
 }

@@ -25,7 +25,9 @@ namespace Thesis
             var experiment = database.NewExperiment();
 
 
-            Globals.k = 70;
+            Globals.k = 60;
+
+            Globals.angle = 20;
 
             Globals.Save(experiment);
 
@@ -47,9 +49,15 @@ namespace Thesis
             constraints.Decide(data.X);
 
             var refinedConstraints = Refiner.removeRedundant(constraints);
-            var refined2Constraints = Refiner.removeSimiliar(refinedConstraints);
+            var refined2Constraints = Refiner.mergeSimiliar(refinedConstraints);
+
+            //var refinedConstraints = Refiner.mergeSimiliar(constraints);
+            //var refined2Constraints = Refiner.removeRedundant(refinedConstraints);
 
             refined2Constraints.Save(experiment);
+
+            Console.Out.WriteLine("\nBase: ");
+            Output.ToConsole(constraints.Constraints);
 
             Console.Out.WriteLine("\nRefined: ");
             Output.ToConsole(refined2Constraints.Constraints);
@@ -71,9 +79,9 @@ namespace Thesis
 
 
             new Visualization()
-                .addModelPlot(cluster, model, false)
-                .addModelPlot(cluster, refinedConstraints, false)
-                .addModelPlot(cluster, refined2Constraints, false)
+                .addModelPlot(cluster, model)
+                .addModelPlot(cluster, refinedConstraints)
+                .addModelPlot(cluster, refined2Constraints)
                 .Show();
 
 

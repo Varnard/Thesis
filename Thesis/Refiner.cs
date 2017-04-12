@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Accord.Math;
 
 namespace Thesis
 {
@@ -12,7 +13,7 @@ namespace Thesis
     {
         public static MathModel removeRedundant(MathModel model)
         {
-            var constraints = model.Constraints;
+            var constraints = new List<double[]>(model.Constraints);
 
             var points = DataProvider.getRefinementPoints();
 
@@ -20,7 +21,6 @@ namespace Thesis
 
             foreach (var constraint in constraints)
             {
-
                 bool needed = false;
 
                 var rest = new List<double[]>(constraints);
@@ -54,21 +54,21 @@ namespace Thesis
         }
 
         public static MathModel removeSimiliar(MathModel model, double distance, double angle)
-        { 
+        {
             var constraints = new List<double[]>(model.Constraints);
 
             var newConstraints = new List<double[]>(model.Constraints);
 
             int i = 0;
-            while (i<constraints.Count-1)
-            { 
-                for (int j = constraints.Count-1; j > i; j--)
+            while (i < constraints.Count - 1)
+            {
+                for (int j = constraints.Count - 1; j > i; j--)
                 {
-                    var a = Math.Abs(Similiarity.calculateAngle(constraints[i], constraints[j]));
-                    if (a<angle || a>180-angle)
+                    var a = Math.Abs(ConstraintCalc.calculateAngle(constraints[i], constraints[j]));
+                    if (a < angle || a > 180 - angle)
                     {
-                        var d = Similiarity.calculateDistance(constraints[i], constraints[j]);
-                        if (d<distance)
+                        var d = ConstraintCalc.calculateDistance(constraints[i], constraints[j]);
+                        if (d < distance)
                         {
                             constraints.RemoveAt(j);
                             newConstraints.RemoveAt(j);
@@ -81,6 +81,50 @@ namespace Thesis
 
 
             return new MathModel(newConstraints);
+        }
+
+        public static MathModel mergeSimiliar(MathModel model, double distance)
+        {
+            return mergeSimiliar(model, distance, Globals.angle);
+        }
+
+        public static MathModel mergeSimiliar(MathModel model)
+        {
+            return mergeSimiliar(model, Globals.distance, Globals.angle);
+        }
+
+        public static MathModel mergeSimiliar(MathModel model, double distance, double angle)
+        {
+            
+            var constraints = new List<double[]>(model.Constraints);
+
+            for (int n = 0; n < 5; n++)
+            {
+                int i = 0;
+                while (i < constraints.Count - 1)
+                {
+                    for (int j = constraints.Count - 1; j > i; j--)
+                    {
+                        var a = Math.Abs(ConstraintCalc.calculateAngle(constraints[i], constraints[j]));
+                        if (a < angle || a > 180 - angle)
+                        {
+                            var d = ConstraintCalc.calculateDistance(constraints[i], constraints[j]);
+                            if (d < distance)
+                            {
+                                var merged = ConstraintCalc.meanConstraint(constraints[i], constraints[j]);
+                                constraints[j] = merged;
+                                constraints[i] = merged;
+                            }
+                        }
+                    }
+
+                    i++;
+                }
+
+                constraints = new List<double[]>(removeSimiliar(new MathModel(constraints), 1, 1).Constraints);
+            }
+
+            return new MathModel(constraints);
         }
     }
 }

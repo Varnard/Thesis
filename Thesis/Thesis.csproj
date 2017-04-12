@@ -126,7 +126,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Refiner.cs" />
-    <Compile Include="Similiarity.cs" />
+    <Compile Include="ConstraintCalc.cs" />
     <Compile Include="SingleClusterWizard.cs" />
     <Compile Include="Statistics.cs" />
     <Compile Include="Visualization.cs" />

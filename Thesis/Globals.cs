@@ -14,7 +14,7 @@ namespace Thesis
         static public double tolerance { get; set; } = 0.01;
         static public double complexity { get; set; } = 0.005;
         static public double distance { get; set; } = 10.0;
-        static public double angle { get; set; } = 5.0;
+        static public double angle { get; set; } = 10.0;
 
         public static void Save(Experiment experiment)
         {

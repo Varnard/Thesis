@@ -48,7 +48,7 @@ namespace Thesis
                 var teacher = new SequentialMinimalOptimization<Linear>()
                 {
                     UseComplexityHeuristic = false,
-                    Strategy = SelectionStrategy.WorstPair                    
+                    Strategy = SelectionStrategy.WorstPair                                        
                 };
 
                 teacher.Complexity = complexity;
