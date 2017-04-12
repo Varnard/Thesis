@@ -10,65 +10,68 @@ namespace Thesis
 {
     public static class Refiner
     {
-        public static Model removeRedundant(Model model)
+        public static MathModel removeRedundant(MathModel model)
         {
-            var SVM = model.SVM;
+            var constraints = model.Constraints;
 
             var points = DataProvider.getRefinementPoints();
 
-            var newSVM = new List<SupportVectorMachine<Linear>>();
+            var newConstraints = new List<double[]>();
 
-            foreach (var svm1 in SVM)
+            foreach (var constraint in constraints)
             {
 
                 bool needed = false;
-                var rest = new List<SupportVectorMachine<Linear>>(SVM);
-                rest.Remove(svm1);
-                var reducedModel = Model.fromSVM(rest);
+
+                var rest = new List<double[]>(constraints);
+                rest.Remove(constraint);
+                var reducedMathModel = new MathModel(rest);
+
+                var removed = new List<double[]>();
+                removed.Add(constraint);
+                var removedModel = new MathModel(removed);
                 foreach (var point in points.X)
                 {
-                    if (!svm1.Decide(point) && reducedModel.Decide(point))
+                    if (!removedModel.Decide(point) && reducedMathModel.Decide(point))
                     {
                         needed = true;
                     }
                 }
-                if (needed) newSVM.Add(svm1);
+                if (needed) newConstraints.Add(constraint);
             }
 
-            return Model.fromSVM(newSVM);
+            return new MathModel(newConstraints);
         }
 
-        public static Model removeSimiliar(Model model, double distance)
+        public static MathModel removeSimiliar(MathModel model, double distance)
         {
             return removeSimiliar(model, distance, Globals.angle);
         }
 
-        public static Model removeSimiliar(Model model)
+        public static MathModel removeSimiliar(MathModel model)
         {
             return removeSimiliar(model, Globals.distance, Globals.angle);
         }
 
-        public static Model removeSimiliar(Model model, double distance, double angle)
-        {
-            var weights = model.GetMathModel();           
+        public static MathModel removeSimiliar(MathModel model, double distance, double angle)
+        { 
+            var constraints = new List<double[]>(model.Constraints);
 
-            var newWeights = new List<double[]>(weights);
-
-            var newSVM = new List<SupportVectorMachine<Linear>>(model.SVM);
+            var newConstraints = new List<double[]>(model.Constraints);
 
             int i = 0;
-            while (i<newWeights.Count-1)
+            while (i<constraints.Count-1)
             { 
-                for (int j = newWeights.Count-1; j > i; j--)
+                for (int j = constraints.Count-1; j > i; j--)
                 {
-                    var a = Math.Abs(Similiarity.calculateAngle(newWeights[i], newWeights[j]));
+                    var a = Math.Abs(Similiarity.calculateAngle(constraints[i], constraints[j]));
                     if (a<angle || a>180-angle)
                     {
-                        var d = Similiarity.calculateDistance(newWeights[i], newWeights[j]);
+                        var d = Similiarity.calculateDistance(constraints[i], constraints[j]);
                         if (d<distance)
                         {
-                            newWeights.RemoveAt(j);
-                            newSVM.RemoveAt(j);
+                            constraints.RemoveAt(j);
+                            newConstraints.RemoveAt(j);
                         }
                     }
                 }
@@ -77,7 +80,7 @@ namespace Thesis
             }
 
 
-            return Model.fromSVM(newSVM);
+            return new MathModel(newConstraints);
         }
     }
 }

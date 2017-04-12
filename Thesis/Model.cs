@@ -115,27 +115,14 @@ namespace Thesis
 
         public bool Decide(double[] input)
         {
-            bool output;
+            double[][] array = { input };
 
-                List<bool> results = new List<bool>(); ;
-                foreach (var classifer in SVM)
-                {
-                    results.Add(classifer.Decide(input));
-                }
-                bool result = true;
-
-                foreach (bool partialResult in results)
-                {
-                    if (partialResult == false) result = false;
-                }
-                output = result;
-           
-            return output;
+            return Decide(array)[0];
         }
 
-        public List<double[]> GetMathModel() 
+        public MathModel GetMathModel() 
         {
-            List<double[]> models = new List<double[]>();            
+            List<double[]> constraints = new List<double[]>();            
 
             foreach (var svm in SVM)
             {
@@ -156,10 +143,10 @@ namespace Thesis
                     variables[i + 1] = sum;
                 }
                 
-                models.Add(variables);
+                constraints.Add(variables);
             }
            
-            return models;
+            return new MathModel(constraints);
         }
 
         public int CountConstraints()
@@ -170,7 +157,7 @@ namespace Thesis
         public void Save(Experiment experiment)
         {
             experiment.Add("constraint_count", CountConstraints());
-            experiment.Add("constraints", Output.ToString(GetMathModel()));
+            experiment.Add("constraints", Output.ToString(GetMathModel().Constraints));
             experiment.Save();
         }
     }

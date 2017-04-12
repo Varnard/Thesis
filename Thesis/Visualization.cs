@@ -108,27 +108,47 @@ namespace Thesis
 
         public Visualization addModelPlot(ClusterWizard input, Model model)
         {
-            return addModelPlot(input, model, true, " ");
+            return addModelPlot(input, model.GetMathModel(), true, " ");
         }
 
         public Visualization addModelPlot(ClusterWizard input, Model model, bool modelClassLabels)
         {
-            return addModelPlot(input, model, modelClassLabels, " ");
+            return addModelPlot(input, model.GetMathModel(), modelClassLabels, " ");
         }
 
         public Visualization addModelPlot(ClusterWizard input, Model model, string title)
         {
-            return addModelPlot(input, model, true, title);
+            return addModelPlot(input, model.GetMathModel(), true, title);
         }
 
         public Visualization addModelPlot(ClusterWizard input, Model model, bool modelClassLabels, String title)
+        {
+            return addModelPlot(input, model.GetMathModel(), modelClassLabels, title);
+        }
+
+        public Visualization addModelPlot(ClusterWizard input, MathModel model)
+        {
+            return addModelPlot(input, model, true, " ");
+        }
+
+        public Visualization addModelPlot(ClusterWizard input, MathModel model, bool modelClassLabels)
+        {
+            return addModelPlot(input, model, modelClassLabels, " ");
+        }
+
+        public Visualization addModelPlot(ClusterWizard input, MathModel model, string title)
+        {
+            return addModelPlot(input, model, true, title);
+        }
+
+        public Visualization addModelPlot(ClusterWizard input, MathModel model, bool modelClassLabels, String title)
         {
             
             var plot = new PlotView();
             plot.Location = new System.Drawing.Point(450, 20);
             plot.Size = new System.Drawing.Size(400, 400);
 
-            var plotModel = new PlotModel { Title = "SVM" };
+            var plotModel = new PlotModel { Title = title };
             plotModel.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = 0, Maximum = 100 });
             plotModel.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = 0, Maximum = 100 });
             plot.Model = plotModel;
@@ -175,7 +195,7 @@ namespace Thesis
             plot.Model.Series.Add(positiveSeries);
             plot.Model.Series.Add(negativeSeries);
 
-            foreach (var constraint in model.GetMathModel())
+            foreach (var constraint in model.Constraints)
             {
                 plot.Model.Series.Add(new FunctionSeries(x => (x * constraint[1] + constraint[0]) / -constraint[2], 0, 100, 0.2));                
             }
