@@ -102,6 +102,28 @@ namespace Thesis
             return new Data(X, Y);
         }
 
+        public static Data getSingleLine4DData()
+        {
+
+            int n = 1000;
+
+            double[][] X = new double[n][];
+
+            for (int i = 0; i < n; i++)
+            {
+                X[i] = new double[4] { Random.NextDouble() * 100, Random.NextDouble() * 100, Random.NextDouble() * 100, Random.NextDouble() * 100 };
+            }
+
+            int[] Y = new int[n];
+
+            for (int i = 0; i < n; i++)
+            {
+                if (2 * X[i][0] - X[i][1] - 0.6 * X[i][2] + 1.4 * X[i][3] - 10 > 0) Y[i] = 1;
+            }
+
+            return new Data(X, Y);
+        }
+
         public static Data getRefinementPoints()
         {
             int n = 10000;

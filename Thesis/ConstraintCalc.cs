@@ -41,16 +41,14 @@ namespace Thesis
                 nconst1 = const1.Divide(Math.Abs(const1[1]))[0];
                 nconst2 = const2.Divide(Math.Abs(const2[1]))[0];
 
-                distance = Math.Abs(nconst1 - nconst2);
-               // distance *= (Math.Abs(const1[1]) + Math.Abs(const2[1])) / 2;
+                distance = Math.Abs(nconst1 - nconst2)/(Math.Abs(nconst1)+Math.Abs(nconst2));   
             }
             else
             {
                 nconst1 = const1.Divide(Math.Abs(const1[2]))[0];
                 nconst2 = const2.Divide(Math.Abs(const2[2]))[0];
 
-                distance = Math.Abs(nconst1 - nconst2);
-                //distance *= (Math.Abs(const1[2]) + Math.Abs(const2[2])) / 2;
+                distance = Math.Abs(nconst1 - nconst2) / (Math.Abs(nconst1) + Math.Abs(nconst2));
             }
 
             return distance;
@@ -77,7 +75,7 @@ namespace Thesis
             }
 
 
-            return const1.Add(const2).Divide(2);
+            return nconst1.Add(nconst2).Divide(2);
         }
 
     }

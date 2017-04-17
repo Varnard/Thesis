@@ -25,12 +25,16 @@ namespace Thesis
             var experiment = database.NewExperiment();
 
 
+            Globals.seed = 2;
+
             Globals.k = 60;
 
             Globals.angle = 20;
 
-            Globals.Save(experiment);
+            Accord.Math.Random.Generator.Seed = Globals.seed;
 
+            Globals.Save(experiment);
+        
 
             DataProvider.Random = MersenneTwister.Instance;
 
@@ -38,6 +42,8 @@ namespace Thesis
             //Data data = DataProvider.getDoubleLinesData();
             Data data = DataProvider.getMultipleLinesData();
             //Data data = DataProvider.getCircleData();
+            //Data data = DataProvider.getSingleLine4DData();
+
 
 
             ClusterWizard cluster = new KMeansClusterWizard(data);
@@ -79,9 +85,9 @@ namespace Thesis
 
 
             new Visualization()
-                .addModelPlot(cluster, model)
-                .addModelPlot(cluster, refinedConstraints)
-                .addModelPlot(cluster, refined2Constraints)
+                .addModelPlot(cluster, model, false)
+                .addModelPlot(cluster, refinedConstraints, false)
+                .addModelPlot(cluster, refined2Constraints, false)
                 .Show();
 
 
