@@ -34,22 +34,23 @@ namespace Thesis
 
         public static double calculateDistance(double[] const1, double[] const2)
         {
-            double nconst1, nconst2, distance;
+            double distance;
 
-            if (Math.Abs(const1[1]) > 0.01 && Math.Abs(const2[1]) > 0.01)
+            var c1 = new MathModel(const1);
+            var c2 = new MathModel(const2);
+
+            var points = DataProvider.getRefinementPoints();
+
+            int numerator = 0;
+            int denominator = 0;
+
+            foreach (var point in points.X)
             {
-                nconst1 = const1.Divide(Math.Abs(const1[1]))[0];
-                nconst2 = const2.Divide(Math.Abs(const2[1]))[0];
-
-                distance = Math.Abs(nconst1 - nconst2)/(Math.Abs(nconst1)+Math.Abs(nconst2));   
+                if (c1.Decide(point) == c2.Decide(point)) numerator++;
+                denominator++;
             }
-            else
-            {
-                nconst1 = const1.Divide(Math.Abs(const1[2]))[0];
-                nconst2 = const2.Divide(Math.Abs(const2[2]))[0];
 
-                distance = Math.Abs(nconst1 - nconst2) / (Math.Abs(nconst1) + Math.Abs(nconst2));
-            }
+            distance = 1-((double)numerator / denominator);
 
             return distance;
         }

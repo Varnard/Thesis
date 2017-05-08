@@ -31,11 +31,12 @@ namespace Thesis
 
             Globals.n = 2;
             Globals.d = 10;
-            Globals.minVal = -1.4*Globals.d;
+            Globals.minVal = -1.9*Globals.d;
             Globals.maxVal = 2*Globals.d;            
 
             Globals.angle = 20;
-
+            Globals.distance = 0.05;
+            
             Accord.Math.Random.Generator.Seed = Globals.seed;
 
             Globals.Save(experiment);
@@ -66,7 +67,7 @@ namespace Thesis
             var refinedConstraints = Refiner.removeRedundant(constraints);
             var refined2Constraints = Refiner.mergeSimiliar(refinedConstraints);
 
-            //var refinedConstraints = Refiner.mergeSimiliar(constraints);
+            //var refinedConstraints = Refiner.mergeSimiliarJac(constraints);
             //var refined2Constraints = Refiner.removeRedundant(refinedConstraints);
 
             refined2Constraints.Save(experiment);
@@ -97,9 +98,6 @@ namespace Thesis
                 .addModelPlot(cluster, model, false)
                 .addModelPlot(cluster, refinedConstraints, false)
                 .addModelPlot(cluster, refined2Constraints, false)
-                .addModelPlot(cluster, model)
-                .addModelPlot(cluster, refinedConstraints)
-                .addModelPlot(cluster, refined2Constraints)
                 .Show();
 
 

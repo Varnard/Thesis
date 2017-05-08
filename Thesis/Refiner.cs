@@ -121,10 +121,11 @@ namespace Thesis
                     i++;
                 }
 
-                constraints = new List<double[]>(removeSimiliar(new MathModel(constraints), 1, 1).Constraints);
+                constraints = new List<double[]>(removeSimiliar(new MathModel(constraints), 1, 0.01).Constraints);
             }
 
             return new MathModel(constraints);
         }
+
     }
 }

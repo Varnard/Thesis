@@ -17,6 +17,14 @@ namespace Thesis
             this.Constraints=constraints;
         }
 
+        public MathModel(double[] constraints)
+        {
+            var list = new List<double[]>();
+            list.Add(constraints);
+            this.Constraints = list;
+        }
+
+
         public MathModel()
         {
             this.Constraints = new List<double[]>();
