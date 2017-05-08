@@ -29,6 +29,11 @@ namespace Thesis
 
             Globals.k = 60;
 
+            Globals.n = 2;
+            Globals.d = 10;
+            Globals.minVal = -1.4*Globals.d;
+            Globals.maxVal = 2*Globals.d;            
+
             Globals.angle = 20;
 
             Accord.Math.Random.Generator.Seed = Globals.seed;
@@ -40,9 +45,13 @@ namespace Thesis
 
             //Data data = DataProvider.getSingleLineData();
             //Data data = DataProvider.getDoubleLinesData();
-            Data data = DataProvider.getMultipleLinesData();
+            //Data data = DataProvider.getMultipleLinesData();
             //Data data = DataProvider.getCircleData();
             //Data data = DataProvider.getSingleLine4DData();
+
+            //Data data = DataProvider.getHyperCube();
+            Data data = DataProvider.getHyperSphere();
+            //Data data = DataProvider.getSimplex();
 
 
 
@@ -88,6 +97,9 @@ namespace Thesis
                 .addModelPlot(cluster, model, false)
                 .addModelPlot(cluster, refinedConstraints, false)
                 .addModelPlot(cluster, refined2Constraints, false)
+                .addModelPlot(cluster, model)
+                .addModelPlot(cluster, refinedConstraints)
+                .addModelPlot(cluster, refined2Constraints)
                 .Show();
 
 

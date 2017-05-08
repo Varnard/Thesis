@@ -17,7 +17,8 @@ namespace Thesis
         List<PlotView> plotList;
 
 
-        public Visualization() {
+        public Visualization()
+        {
 
             plotList = new List<PlotView>();
 
@@ -30,10 +31,10 @@ namespace Thesis
 
             int c = plotList.Count;
 
-            int h = 500 + ((c-1) / 3) * 400;
+            int h = 500 + ((c - 1) / 3) * 400;
             int w;
             if (c > 2) w = 1300;
-            else w = 100 + c*400;
+            else w = 100 + c * 400;
 
             var form = new Form()
             {
@@ -46,7 +47,7 @@ namespace Thesis
 
             foreach (var plot in plotList)
             {
-                plot.Location = new System.Drawing.Point((i%3)*400, 20+(i/3)*400);
+                plot.Location = new System.Drawing.Point((i % 3) * 400, 20 + (i / 3) * 400);
                 form.Controls.Add(plot);
                 i++;
             }
@@ -54,14 +55,14 @@ namespace Thesis
             Application.Run(form);
         }
 
-        public Visualization addClusters(ClusterWizard input, String title=" ")
+        public Visualization addClusters(ClusterWizard input, String title = " ")
         {
             var plot = new PlotView();
             plot.Size = new System.Drawing.Size(400, 400);
 
             var model = new PlotModel { Title = title };
-            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = 0, Maximum = 100 });
-            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = 0, Maximum = 100 });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = Globals.minVal, Maximum = Globals.maxVal });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = Globals.minVal, Maximum = Globals.maxVal });
             plot.Model = model;
 
             var zeroOneAxis = new RangeColorAxis { Key = "zeroOneColors" };
@@ -143,21 +144,21 @@ namespace Thesis
 
         public Visualization addModelPlot(ClusterWizard input, MathModel model, bool modelClassLabels, String title)
         {
-            
+
             var plot = new PlotView();
             plot.Location = new System.Drawing.Point(450, 20);
             plot.Size = new System.Drawing.Size(400, 400);
 
             var plotModel = new PlotModel { Title = title };
-            plotModel.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = 0, Maximum = 100 });
-            plotModel.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = 0, Maximum = 100 });
+            plotModel.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = Globals.minVal, Maximum = Globals.maxVal });
+            plotModel.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = Globals.minVal, Maximum = Globals.maxVal });
             plot.Model = plotModel;
 
             var zeroOneAxis = new RangeColorAxis { Key = "zeroOneColors" };
             zeroOneAxis.AddRange(0, 0.1, OxyColors.Red);
             zeroOneAxis.AddRange(1, 1.1, OxyColors.ForestGreen);
 
-            plot.Model.Axes.Add(zeroOneAxis);            
+            plot.Model.Axes.Add(zeroOneAxis);
 
             var positiveSeries = new ScatterSeries { MarkerType = MarkerType.Circle, ColorAxisKey = "zeroOneColors" };
             var negativeSeries = new ScatterSeries { MarkerType = MarkerType.Circle, ColorAxisKey = "zeroOneColors" };
@@ -177,12 +178,12 @@ namespace Thesis
                 }
             }
             else
-            {               
+            {
                 foreach (var point in input.getPositives())
                 {
                     positiveSeries.Points.Add(new ScatterPoint(point[0], point[1], 3, 1));
                 }
-                
+
                 foreach (var cluster in input.getNegatives())
                 {
                     foreach (var point in cluster)
@@ -197,7 +198,7 @@ namespace Thesis
 
             foreach (var constraint in model.Constraints)
             {
-                plot.Model.Series.Add(new FunctionSeries(x => (x * constraint[1] + constraint[0]) / -constraint[2], 0, 100, 0.2));                
+                plot.Model.Series.Add(new FunctionSeries(x => (x * constraint[1] + constraint[0]) / -constraint[2], Globals.minVal, Globals.maxVal, 0.2));
             }
 
             plotList.Add(plot);
