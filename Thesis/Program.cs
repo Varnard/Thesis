@@ -34,8 +34,8 @@ namespace Thesis
             Globals.minVal = -1.9*Globals.d;
             Globals.maxVal = 2*Globals.d;            
 
-            Globals.angle = 20;
-            Globals.distance = 0.05;
+            Globals.angle = 25;
+            Globals.distance = 0.1;
             
             Accord.Math.Random.Generator.Seed = Globals.seed;
 
@@ -44,16 +44,11 @@ namespace Thesis
 
             DataProvider.Random = MersenneTwister.Instance;
 
-            //Data data = DataProvider.getSingleLineData();
-            //Data data = DataProvider.getDoubleLinesData();
-            //Data data = DataProvider.getMultipleLinesData();
-            //Data data = DataProvider.getCircleData();
-            //Data data = DataProvider.getSingleLine4DData();
+            //var originalModel = Benchmark.getHyperCube();
+            //var originalModel = Benchmark.getHyperSurface();
+            var originalModel = Benchmark.getMultipleLines2D();
 
-            //Data data = DataProvider.getHyperCube();
-            Data data = DataProvider.getHyperSphere();
-            //Data data = DataProvider.getSimplex();
-
+            Data data = DataProvider.getBenchmark(originalModel);
 
 
             ClusterWizard cluster = new KMeansClusterWizard(data);
@@ -64,11 +59,11 @@ namespace Thesis
 
             constraints.Decide(data.X);
 
-            var refinedConstraints = Refiner.removeRedundant(constraints);
-            var refined2Constraints = Refiner.mergeSimiliar(refinedConstraints);
+            //var refinedConstraints = Refiner.removeRedundant(constraints);
+            //var refined2Constraints = Refiner.mergeSimiliar(refinedConstraints);
 
-            //var refinedConstraints = Refiner.mergeSimiliarJac(constraints);
-            //var refined2Constraints = Refiner.removeRedundant(refinedConstraints);
+            var refinedConstraints = Refiner.mergeSimiliar(constraints);
+            var refined2Constraints = Refiner.removeRedundant(refinedConstraints);
 
             refined2Constraints.Save(experiment);
 

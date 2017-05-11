@@ -10,77 +10,6 @@ namespace Thesis
     {
         public static Random Random { get; set; }   
 
-        public static Data getSingleLineData() {
-
-            int n = 1000;
-
-            double[][] X = new double[n][];          
-
-            for (int i = 0; i < n; i++)
-            {
-                X[i] = new double[2] { Random.NextDouble() * 100, Random.NextDouble() * 100 };
-            }
-
-            int[] Y = new int[n];
-
-            for (int i = 0; i < n; i++)
-            {
-                if (2 * X[i][0] - X[i][1] -10 > 0) Y[i] = 1; // y=2x -10
-            }
-
-            return new Data(X, Y);
-    }
-
-        public static Data getDoubleLinesData()
-        {
-
-            int n = 1000;
-
-            double[][] X = new double[n][];
-
-            for (int i = 0; i < n; i++)
-            {
-                X[i] = new double[2] { Random.NextDouble() * 100, Random.NextDouble() * 100 };
-            }
-
-            int[] Y = new int[n];
-
-            for (int i = 0; i < n; i++)
-            {
-                if (X[i][0] > X[i][1] - 30 && X[i][0] < X[i][1]+30) Y[i] = 1;
-            }
-
-            return new Data(X, Y);
-        }
-
-        public static Data getMultipleLinesData()
-        {
-
-            int n = 1000;
-
-            double[][] X = new double[n][];
-
-            for (int i = 0; i < n; i++)
-            {
-                X[i] = new double[2] { Random.NextDouble() * 100, Random.NextDouble() * 100 };
-            }
-
-            int[] Y = new int[n];
-
-            for (int i = 0; i < n; i++)
-            {
-                if (
-                X[i][0] > X[i][1] - 30 && 
-                X[i][0] > 25 &&
-                X[i][1] < 70 &&
-                X[i][0] < X[i][1] + 30 &&
-                X[i][0] > -X[i][1]+60
-                ) Y[i] = 1;
-            }
-
-            return new Data(X, Y);
-        }
-
         public static Data getCircleData()
         {
             int n = 1000;
@@ -124,27 +53,7 @@ namespace Thesis
             return new Data(X, Y);
         }
 
-        public static Data getHyperCube()
-        {
-            int p = 1000;
-
-            double[][] X = getPoints(p);
-
-            int[] Y = new int[p];
-
-            for (int i = 0; i < p; i++)
-            {
-                int satisfied=1;
-
-                for (int j = 0; j < Globals.n; j++)
-                {
-                    if (X[i][j] > Globals.d || X[i][j] < -Globals.d) satisfied = 0;
-                }
-                Y[i] = satisfied;
-            }
-
-            return new Data(X, Y);
-        }
+       
 
         public static Data getSimplex()
         {
@@ -178,7 +87,9 @@ namespace Thesis
             return new Data(X, Y);
         }
 
-        public static Data getHyperSphere()
+       
+
+        public static Data getBenchmark(MathModel benchmark)
         {
             int p = 1000;
 
@@ -188,21 +99,12 @@ namespace Thesis
 
             for (int i = 0; i < p; i++)
             {
-                int satisfied = 1;
-                double sum=0;
-
-                for (int j = 0; j < Globals.n; j++)
-                {
-                    sum += Math.Pow(X[i][j], 2);
-                }
-
-                if (sum > Math.Pow(Globals.d, 2)) satisfied = 0;
-
-                Y[i] = satisfied;
+                if (benchmark.Decide(X[i])) Y[i] = 1;
             }
 
             return new Data(X, Y);
         }
+
 
         public static Data getRefinementPoints()
         {

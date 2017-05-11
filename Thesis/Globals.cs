@@ -18,7 +18,7 @@ namespace Thesis
         static public double minVal { get; set; } = -100;
 
         static public double tolerance { get; set; } = 0.01;
-        static public double complexity { get; set; } = 0.01;
+        static public double complexity { get; set; } = 0.1;
 
         static public double distance { get; set; } = 0.2;
         static public double angle { get; set; } = 10.0;
