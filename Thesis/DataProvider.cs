@@ -8,7 +8,9 @@ namespace Thesis
 {
     public static class DataProvider
     {
-        public static Random Random { get; set; }   
+        public static Random Random { get; set; }
+
+        private static Data refPoints;
 
         public static Data getCircleData()
         {
@@ -30,68 +32,11 @@ namespace Thesis
 
             return new Data(X, Y);
         }
-
-        public static Data getSingleLine4DData()
-        {
-
-            int n = 1000;
-
-            double[][] X = new double[n][];
-
-            for (int i = 0; i < n; i++)
-            {
-                X[i] = new double[4] { Random.NextDouble() * 100, Random.NextDouble() * 100, Random.NextDouble() * 100, Random.NextDouble() * 100 };
-            }
-
-            int[] Y = new int[n];
-
-            for (int i = 0; i < n; i++)
-            {
-                if (2 * X[i][0] - X[i][1] - 0.6 * X[i][2] + 1.4 * X[i][3] - 10 > 0) Y[i] = 1;
-            }
-
-            return new Data(X, Y);
-        }
-
-       
-
-        public static Data getSimplex()
-        {
-            int p = 1000;
-
-            double[][] X = getPoints(p);
-
-            int[] Y = new int[p];
-
-            for (int i = 0; i < p; i++)
-            {
-                int satisfied = 1;
-                double sum=0;
-
-                for (int j = 0; j < Globals.n-1; j++)
-                {
-                    if ((X[i][j]*(1/Math.Tan(Math.PI/12)))- (X[i][j+1] * (Math.Tan(Math.PI / 12))) < 0) satisfied = 0;
-                    if ((X[i][j+1]*(1/Math.Tan(Math.PI/12)))- (X[i][j] * (Math.Tan(Math.PI / 12))) < 0) satisfied = 0;
-                    sum += X[i][j];
-                }
-                if ((X[i][Globals.n-1] * (1 / Math.Tan(Math.PI / 12))) - (X[i][0] * (Math.Tan(Math.PI / 12))) < 0) satisfied = 0;
-                if ((X[i][0] * (1 / Math.Tan(Math.PI / 12))) - (X[i][Globals.n - 1] * (Math.Tan(Math.PI / 12))) < 0) satisfied = 0;
-                sum += X[i][Globals.n-1];
-
-                if (sum > Globals.d) satisfied = 0;
-
-                Y[i] = satisfied;
-            
-            }
-
-            return new Data(X, Y);
-        }
-
-       
+                     
 
         public static Data getBenchmark(MathModel benchmark)
         {
-            int p = 1000;
+            int p = Globals.p;
 
             double[][] X = getPoints(p);
 
@@ -105,17 +50,72 @@ namespace Thesis
             return new Data(X, Y);
         }
 
-
-        public static Data getRefinementPoints()
+        public static Data getBenchmarkBalanced(MathModel benchmark)
         {
-            int p = 10000;
+            int p = Globals.p;
 
-            double[][] X = getPoints(p);
-
+            double[][] X = new double[p][];
 
             int[] Y = new int[p];
 
+            int posCount = 0;
+            int negCount = 0;
+
+            int c = p / 2;
+            int i = 0;
+            while (posCount<c||negCount<c)
+            {
+                var point = new double[Globals.n];
+
+                for (int j = 0; j < Globals.n; j++)
+                {                    
+                    point[j] = Random.NextDouble() * (Globals.maxVal - Globals.minVal) + Globals.minVal;
+                }
+
+                if (benchmark.Decide(point))
+                {
+                    if (posCount < c)
+                    {
+                        X[i] = point;
+                        Y[i] = 1;
+                        i++;
+                        posCount++;
+                    }
+                }
+                else
+                {
+                    if (negCount < c)
+                    {
+                        X[i] = point;
+                        Y[i] = 0;
+                        i++;
+                        negCount++;
+                    }
+                }
+            }
+
+   
+               
+
+
             return new Data(X, Y);
+        }
+
+
+        public static Data getRefinementPoints()
+        {
+            if (refPoints == null)
+            {
+                int p = 1000;
+
+                double[][] X = getPoints(p);
+
+
+                int[] Y = new int[p];
+                refPoints = new Data(X, Y);
+            }
+
+            return refPoints;
         }
 
         private static double[][] getPoints(int n)

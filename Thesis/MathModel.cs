@@ -71,10 +71,10 @@ namespace Thesis
             return Constraints.Count;
         }
 
-        public void Save(Experiment experiment)
+        public void Save(Experiment experiment, string title="")
         {
-            experiment.Add("constraint_count", CountConstraints());
-            experiment.Add("constraints", Output.ToString(Constraints));
+            experiment.Add(title+"constraint_count", CountConstraints());
+            experiment.Add(title+"constraints", Output.ToString(Constraints));
             experiment.Save();
         }
     }

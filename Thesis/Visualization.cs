@@ -198,6 +198,7 @@ namespace Thesis
 
             foreach (var constraint in model.Constraints)
             {
+                if (constraint[2] == 0) constraint[2] = 0.0001;
                 plot.Model.Series.Add(new FunctionSeries(x => (x * constraint[1] + constraint[0]) / -constraint[2], Globals.minVal, Globals.maxVal, 0.2));
             }
 

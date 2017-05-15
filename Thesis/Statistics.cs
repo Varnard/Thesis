@@ -17,22 +17,22 @@ namespace Thesis
         double negJaccard { get; }
 
 
-        public Statistics(Data original, bool[] decisions) 
+        public Statistics(Data original, bool[] decisions)
         {
             TP = 0;
             FP = 0;
             TN = 0;
             FN = 0;
 
-            int posJacDenominator=0;
-            int posJacNumerator=0;
-            int negJacDenominator=0;
-            int negJacNumerator=0;
+            int posJacDenominator = 0;
+            int posJacNumerator = 0;
+            int negJacDenominator = 0;
+            int negJacNumerator = 0;
 
             bool[] correct = original.getYAsBool();
 
             for (int i = 0; i < decisions.Length; i++)
-            {             
+            {
                 if (correct[i])
                 {
                     if (decisions[i])
@@ -90,22 +90,22 @@ namespace Thesis
 
         public string getMeasures()
         {
-            return "Accuracy: " + Math.Round(getAccuracy(),3) +
-            "\nPrecision: " + Math.Round(getPrecision(),3) +
-            "\nRecall: " + Math.Round(getRecall(),3) +
-            "\nSpecificity: " + Math.Round(getSpecificity(),3)+
-            "\nPositive Jaccard index: "+Math.Round(posJaccard,3) +
+            return "Accuracy: " + Math.Round(getAccuracy(), 3) +
+            "\nPrecision: " + Math.Round(getPrecision(), 3) +
+            "\nRecall: " + Math.Round(getRecall(), 3) +
+            "\nSpecificity: " + Math.Round(getSpecificity(), 3) +
+            "\nPositive Jaccard index: " + Math.Round(posJaccard, 3) +
             "\nNegative Jaccard index: " + Math.Round(negJaccard, 3);
         }
 
-        public void save(Experiment experiment)
+        public void save(Experiment experiment, string title = "")
         {
-            experiment.Add("Positive_Jaccard_index", Math.Round(posJaccard, 3));
-            experiment.Add("Negative_Jaccard_index", Math.Round(negJaccard, 3));
-            experiment.Add("Accuracy", Math.Round(getAccuracy(), 3));
-            experiment.Add("Precision", Math.Round(getPrecision(), 3));
-            experiment.Add("Recall", Math.Round(getRecall(), 3));
-            experiment.Add("Specificity", Math.Round(getSpecificity(), 3));
+            experiment.Add(title + "Positive_Jaccard_index", Math.Round(posJaccard, 3));
+            experiment.Add(title + "Negative_Jaccard_index", Math.Round(negJaccard, 3));
+            experiment.Add(title + "Accuracy", Math.Round(getAccuracy(), 3));
+            experiment.Add(title + "Precision", Math.Round(getPrecision(), 3));
+            experiment.Add(title + "Recall", Math.Round(getRecall(), 3));
+            experiment.Add(title + "Specificity", Math.Round(getSpecificity(), 3));
             experiment.Save();
 
         }

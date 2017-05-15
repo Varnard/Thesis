@@ -12,7 +12,6 @@ using Modeling.Utils;
 using ExperimentDatabase;
 
 
-//gurobi
 namespace Thesis
 {
     class Program
@@ -24,80 +23,112 @@ namespace Thesis
 
             var experiment = database.NewExperiment();
 
-
-            Globals.seed = 2;
-
-            Globals.k = 60;
-
-            Globals.n = 2;
-            Globals.d = 10;
-            Globals.minVal = -1.9*Globals.d;
-            Globals.maxVal = 2*Globals.d;            
-
-            Globals.angle = 25;
-            Globals.distance = 0.1;
-            
-            Accord.Math.Random.Generator.Seed = Globals.seed;
-
+            Globals.fromArgs(args);
             Globals.Save(experiment);
-        
 
+            Accord.Math.Random.Generator.Seed = Globals.seed;
             DataProvider.Random = MersenneTwister.Instance;
 
-            //var originalModel = Benchmark.getHyperCube();
-            //var originalModel = Benchmark.getHyperSurface();
-            var originalModel = Benchmark.getMultipleLines2D();
+           // Globals.dataset = "simplex";
 
-            Data data = DataProvider.getBenchmark(originalModel);
+            MathModel originalModel = null;
 
+            switch (Globals.dataset)
+            {
+                case "cube":
+                    {
+                        originalModel = Benchmark.getHyperCube();
+                        break;
+                    }
+
+                case "sphere":
+                    {
+                        originalModel = Benchmark.getHyperSphere();
+                        break;
+                    }
+
+                case "simplex":
+                    {
+                        originalModel = Benchmark.getSimplex();
+                        break;
+                    }
+
+            }
+
+            //var originalModel = Benchmark.getMultipleLines2D();
+
+
+            Data data = DataProvider.getBenchmarkBalanced(originalModel);
+
+            //Data data = DataProvider.getSimplex();
 
             ClusterWizard cluster = new KMeansClusterWizard(data);
+
 
 
             Model model = Model.fromCluster(cluster);
             var constraints = model.GetMathModel();
 
-            constraints.Decide(data.X);
+            constraints.Save(experiment, "Base_");
 
-            //var refinedConstraints = Refiner.removeRedundant(constraints);
-            //var refined2Constraints = Refiner.mergeSimiliar(refinedConstraints);
+            var refinedConstraints = Refiner.removeRedundant(constraints);
+            refinedConstraints = Refiner.mergeSimiliar(refinedConstraints);
+            //var clusterConstraints = Refiner.cluster(constraints);
+            //clusterConstraints = Refiner.removeRedundant(clusterConstraints);
 
-            var refinedConstraints = Refiner.mergeSimiliar(constraints);
-            var refined2Constraints = Refiner.removeRedundant(refinedConstraints);
+            //var refinedConstraints = Refiner.mergeSimiliar(constraints);
+            //var refined2Constraints = Refiner.removeRedundant(refinedConstraints);
 
-            refined2Constraints.Save(experiment);
+            refinedConstraints.Save(experiment,"Refined_");
 
-            Console.Out.WriteLine("\nBase: ");
-            Output.ToConsole(constraints.Constraints);
+            //Console.Out.WriteLine("\nBase: ");
+            //Output.ToConsole(constraints.Constraints);
 
-            Console.Out.WriteLine("\nRefined: ");
-            Output.ToConsole(refined2Constraints.Constraints);
+            //Console.Out.WriteLine("\nRefined: ");
+            //Output.ToConsole(refinedConstraints.Constraints);
 
 
             var stats = new Statistics(data, model.Decide(data.X));
 
-            Console.Out.WriteLine("\nBase Measures: ");
-            Console.Out.WriteLine(stats.getMeasures());
-            Console.Out.WriteLine("\nContraints: " + model.CountConstraints());
+            //Console.Out.WriteLine("\nBase Measures: ");
+            //Console.Out.WriteLine(stats.getMeasures());
+            //Console.Out.WriteLine("\nContraints: " + model.CountConstraints());
 
-            var stats2 = new Statistics(data, refined2Constraints.Decide(data.X));
-
-            Console.Out.WriteLine("\nRefined Measures: ");
-            Console.Out.WriteLine(stats2.getMeasures());
-            Console.Out.WriteLine("\nContraints k: " + refined2Constraints.CountConstraints());
-
-            stats2.save(experiment);
+            stats.save(experiment, "Base_");
 
 
-            new Visualization()
-                .addModelPlot(cluster, model, false)
-                .addModelPlot(cluster, refinedConstraints, false)
-                .addModelPlot(cluster, refined2Constraints, false)
-                .Show();
+            var stats2 = new Statistics(data, refinedConstraints.Decide(data.X));
+
+            //Console.Out.WriteLine("\nRefined Measures: ");
+            //Console.Out.WriteLine(stats2.getMeasures());
+            //Console.Out.WriteLine("\nContraints k: " + refinedConstraints.CountConstraints());
+
+            //var stats3 = new Statistics(data, clusterConstraints.Decide(data.X));
+
+            //Console.Out.WriteLine("\nClustered Measures: ");
+            //Console.Out.WriteLine(stats3.getMeasures());
+            //Console.Out.WriteLine("\nContraints: " + clusterConstraints.CountConstraints());
+
+            stats2.save(experiment,"Refined_");
+
+            //Console.WriteLine("\nRefiner Classic\n");
+            experiment.Add("Comparison_angle",Comparison.CalculateMeanAngle(originalModel, refinedConstraints));
+            experiment.Save();
+
+            //Console.WriteLine("\nRefiner Cluster\n");
+            //Comparison.CalculateMeanAngle(originalModel, clusterConstraints);
+
+            //new Visualization()
+            //    .addModelPlot(cluster, model)
+            //    .addModelPlot(cluster, refinedConstraints, false)
+            //    //.addModelPlot(cluster, clusterConstraints, false)
+            //    .addModelPlot(cluster, originalModel, false)
+            //    .Show();
 
 
-
-            Console.ReadKey();
+            experiment.Dispose();
+            database.Dispose();
+           // Console.ReadKey();
         }
     }
 }

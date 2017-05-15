@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Accord.Math;
+using Accord.MachineLearning;
 
 namespace Thesis
 {
@@ -125,6 +126,21 @@ namespace Thesis
             }
 
             return new MathModel(constraints);
+        }
+
+        public static MathModel cluster(MathModel model)
+        {
+            List<double[]> result = new List<double[]>(); 
+            var kmeans = new KMeans(10);
+
+            kmeans.Distance = new JacDistance();
+
+            kmeans.Learn(model.Constraints.ToArray());
+
+            result.AddRange(kmeans.Clusters.Centroids);
+
+            return new MathModel(result);
+
         }
 
     }
