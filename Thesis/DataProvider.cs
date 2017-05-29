@@ -10,29 +10,7 @@ namespace Thesis
     {
         public static Random Random { get; set; }
 
-        private static Data refPoints;
-
-        public static Data getCircleData()
-        {
-            int n = 1000;
-
-            double[][] X = new double[n][];
-
-            for (int i = 0; i < n; i++)
-            {
-                X[i] = new double[2] { Random.NextDouble() * 100, Random.NextDouble() * 100 };
-            }
-
-            int[] Y = new int[n];
-
-            for (int i = 0; i < n; i++)
-            {
-                if (Math.Pow(X[i][0]-40,2) + Math.Pow(X[i][1]-40, 2) < Math.Pow(30, 2)) Y[i] = 1;
-            }
-
-            return new Data(X, Y);
-        }
-                     
+        private static Data refPoints;                     
 
         public static Data getBenchmark(MathModel benchmark)
         {
@@ -49,6 +27,7 @@ namespace Thesis
 
             return new Data(X, Y);
         }
+
 
         public static Data getBenchmarkBalanced(MathModel benchmark)
         {
@@ -69,7 +48,7 @@ namespace Thesis
 
                 for (int j = 0; j < Globals.n; j++)
                 {                    
-                    point[j] = Random.NextDouble() * (Globals.maxVal - Globals.minVal) + Globals.minVal;
+                    point[j] = Math.Round(Random.NextDouble() * (Globals.maxVal - Globals.minVal) + Globals.minVal,5);
                 }
 
                 if (benchmark.Decide(point))
@@ -92,11 +71,26 @@ namespace Thesis
                         negCount++;
                     }
                 }
+            }           
+            
+            return new Data(X, Y);
+        }
+
+        public static Data fromFile(MathModel benchmark, string filename)
+        {
+            int p = Globals.p;
+
+            double[][] points = Input.readPoints(filename);
+
+            double[][] X = new double[p][];
+
+            int[] Y = new int[p];
+
+            for (int i = 0; i < p; i++)
+            {
+                X[i] = points[i];
+                if (benchmark.Decide(points[i])) Y[i] = 1;
             }
-
-   
-               
-
 
             return new Data(X, Y);
         }
@@ -128,7 +122,7 @@ namespace Thesis
 
                 for (int j = 0; j < Globals.n; j++)
                 {
-                    X[i][j] = Random.NextDouble() * (Globals.maxVal-Globals.minVal) + Globals.minVal;
+                    X[i][j] = Math.Round(Random.NextDouble() * (Globals.maxVal-Globals.minVal) + Globals.minVal,5);
                 }
             }
 

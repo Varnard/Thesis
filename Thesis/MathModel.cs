@@ -31,7 +31,7 @@ namespace Thesis
         }
        
 
-        public bool[] Decide(double[][] inputs)
+        public virtual bool[] Decide(double[][] inputs)
         {
             bool[] output = new bool[inputs.Length];
 

@@ -10,8 +10,8 @@ namespace Thesis
     public static class Globals
     {
          
-        static public int seed { get; set; } = 1;
-        static public int k { get; set; } = 60;
+        static public int seed { get; set; } = 2;
+        static public int k { get; set; } = 100;
 
         static public int p { get; set; } = 1000;
 
@@ -20,11 +20,11 @@ namespace Thesis
         static public double maxVal { get; set; }
         static public double minVal { get; set; }
 
-        static public double tolerance { get; set; } = 0.01;
-        static public double complexity { get; set; } = 0.1;
+        static public double tolerance { get; set; } = 0.001;
+        static public double complexity { get; set; } = 0.5;
 
         static public double distance { get; set; } = 0.1;
-        static public double angle { get; set; } = 25.0;
+        static public double angle { get; set; } = 20.0;
 
         static public string dataset { get; set; } = "cube";
 

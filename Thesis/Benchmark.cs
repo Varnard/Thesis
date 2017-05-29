@@ -69,13 +69,23 @@ namespace Thesis
             return new MathModel(constraints);
         }
 
-        public static MathModel getHyperSphere()
+        public static SphereModel getHyperSphere()
         {
-            Globals.setMinMax(-Globals.d, 2 * Globals.d);
+            Globals.setMinMax(-2*Globals.d, 2 * Globals.d);
 
             var constraints = new List<double[]>();
 
-            return new MathModel(constraints);
+            var const0 = new double[Globals.n + 1];
+            const0[0] = Globals.d;
+
+            for (int i = 0; i < Globals.n; i++)
+            {
+                const0[i + 1] = 1;
+            }
+
+            constraints.Add(const0);
+
+            return new SphereModel(constraints);
         }
 
         public static MathModel getSimplex()

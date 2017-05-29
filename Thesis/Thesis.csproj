@@ -144,6 +144,7 @@
     <Compile Include="ClusterWizard.cs" />
     <Compile Include="Data.cs" />
     <Compile Include="DataProvider.cs" />
+    <Compile Include="Input.cs" />
     <Compile Include="JacDistance.cs" />
     <Compile Include="KMeansClusterWizard.cs" />
     <Compile Include="MathModel.cs" />
@@ -155,6 +156,7 @@
     <Compile Include="Refiner.cs" />
     <Compile Include="ConstraintCalc.cs" />
     <Compile Include="SingleClusterWizard.cs" />
+    <Compile Include="SphereModel.cs" />
     <Compile Include="Statistics.cs" />
     <Compile Include="Visualization.cs" />
   </ItemGroup>

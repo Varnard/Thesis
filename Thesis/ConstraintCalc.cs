@@ -61,12 +61,12 @@ namespace Thesis
 
             for (int i = 1; i < const1.Length; i++)
             {
-                candidates[i - 1] = Math.Min(Math.Abs(const1[i]), Math.Abs(const1[i]));
+                candidates[i - 1] = Math.Min(Math.Abs(const1[i]), Math.Abs(const2[i]));
             }
 
             var maxMin = candidates.Max();
 
-            int scalingIndex = candidates.IndexOf(maxMin);
+            int scalingIndex = candidates.IndexOf(maxMin)+1;
 
             if (maxMin > 0.01)
             {
@@ -80,8 +80,8 @@ namespace Thesis
                 nconst2 = const2;
             }
 
-           
-            return nconst1.Add(nconst2).Divide(2);
+            var result = nconst1.Add(nconst2).Divide(2);
+            return result;
         }
 
     }

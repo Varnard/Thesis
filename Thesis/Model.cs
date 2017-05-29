@@ -129,22 +129,26 @@ namespace Thesis
             {
                 var supportVectors = svm.SupportVectors;
 
-                var weights = svm.Weights;
-
-                int featureNumber = supportVectors.First().Length;
-
-                double[] variables = new double[featureNumber + 1];
-                variables[0] = svm.Threshold;
-                
-                for (int i = 0; i < featureNumber; i++)
+                if (supportVectors.Length > 0)
                 {
-                    double sum = 0;
-                    for (int j = 0; j < supportVectors.Length; j++)
-                        sum += weights[j] * supportVectors[j][i];
-                    variables[i + 1] = sum;
+                    var weights = svm.Weights;
+
+
+                    int featureNumber = supportVectors.First().Length;
+
+                    double[] variables = new double[featureNumber + 1];
+                    variables[0] = svm.Threshold;
+
+                    for (int i = 0; i < featureNumber; i++)
+                    {
+                        double sum = 0;
+                        for (int j = 0; j < supportVectors.Length; j++)
+                            sum += weights[j] * supportVectors[j][i];
+                        variables[i + 1] = sum;
+                    }
+
+                    constraints.Add(variables);
                 }
-                
-                constraints.Add(variables);
             }
            
             return new MathModel(constraints);
