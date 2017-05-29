@@ -29,7 +29,7 @@ namespace Thesis
         }
 
 
-        public static Data getBenchmarkBalanced(MathModel benchmark)
+        public static Data getBenchmarkBalanced(MathModel benchmark, double ratio=1)
         {
             int p = Globals.p;
 
@@ -40,9 +40,10 @@ namespace Thesis
             int posCount = 0;
             int negCount = 0;
 
-            int c = p / 2;
+            int pc = (int)((p / 2.0) * ratio);
+            int nc = (int)((p / 2.0) * (1/ratio));
             int i = 0;
-            while (posCount<c||negCount<c)
+            while (posCount<pc||negCount<nc)
             {
                 var point = new double[Globals.n];
 
@@ -53,7 +54,7 @@ namespace Thesis
 
                 if (benchmark.Decide(point))
                 {
-                    if (posCount < c)
+                    if (posCount < pc)
                     {
                         X[i] = point;
                         Y[i] = 1;
@@ -63,7 +64,7 @@ namespace Thesis
                 }
                 else
                 {
-                    if (negCount < c)
+                    if (negCount < nc)
                     {
                         X[i] = point;
                         Y[i] = 0;

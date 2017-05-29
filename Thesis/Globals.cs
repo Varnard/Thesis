@@ -14,6 +14,7 @@ namespace Thesis
         static public int k { get; set; } = 100;
 
         static public int p { get; set; } = 1000;
+        static public double ratio { get; set; } = 1;
 
         static public int n { get; set; } = 2;
         static public double d { get; set; } = 2.7;
@@ -49,6 +50,7 @@ namespace Thesis
             if (count > 7) complexity = double.Parse(args[7]);
             if (count > 8) distance = double.Parse(args[8]);
             if (count > 9) angle = double.Parse(args[9]);
+            if (count > 10) ratio = double.Parse(args[10]);
         }
 
 
@@ -58,6 +60,7 @@ namespace Thesis
             experiment.Add("dataset", Globals.dataset);
             experiment.Add("K", Globals.k);
             experiment.Add("P", Globals.p);
+            experiment.Add("PN_Ratio", Globals.ratio);
             experiment.Add("N", Globals.n);
             experiment.Add("D", Globals.d);
             experiment.Add("Tolerance", Globals.tolerance);
