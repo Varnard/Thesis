@@ -40,9 +40,13 @@ namespace Thesis
             int posCount = 0;
             int negCount = 0;
 
-            int pc = (int)((p / 2.0) * ratio);
-            int nc = (int)((p / 2.0) * (1/ratio));
+            int nc = (int)(p / (double)(1+ratio));
+
+            int pc = (int) ((p / (double)(1 + ratio)) * (double)ratio);
             int i = 0;
+
+            if (pc + nc < p) pc += 1;
+
             while (posCount<pc||negCount<nc)
             {
                 var point = new double[Globals.n];

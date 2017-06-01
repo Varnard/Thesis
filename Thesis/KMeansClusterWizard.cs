@@ -9,7 +9,7 @@ namespace Thesis
 {
     class KMeansClusterWizard : ClusterWizard
     {
-        public int k { get; }
+        public int k { get; private set; }
 
         public KMeansClusterWizard(Data data, int k) : base(data)
         {
@@ -23,7 +23,9 @@ namespace Thesis
 
         public override List<double[][]> clusterNegatives()
         {
-            KMeans kmeans = new KMeans(k);
+            if (negatives.Length < k)  k = negatives.Length-1;
+
+            KMeans kmeans = new KMeans(k);            
 
             List<double[]>[] clusterArray = new List<double[]>[k];
 
