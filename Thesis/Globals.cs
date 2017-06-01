@@ -13,7 +13,7 @@ namespace Thesis
         static public int seed { get; set; } = 2;
         static public int k { get; set; } = 100;
 
-        static public int p { get; set; } = 1000;
+        static public int p { get; set; } = 500;
         static public double ratio { get; set; } = 1;
 
         static public int n { get; set; } = 2;
@@ -25,9 +25,11 @@ namespace Thesis
         static public double complexity { get; set; } = 0.5;
 
         static public double distance { get; set; } = 0.1;
-        static public double angle { get; set; } = 20.0;
+        static public double angle { get; set; } = 15.0;
 
         static public string dataset { get; set; } = "cube";
+
+        static public string dbName { get; set; } = "test.db";
 
         public static void setMinMax(double min, double max) 
         {
@@ -35,7 +37,7 @@ namespace Thesis
             maxVal = max;        
         }
 
-        //Thesis.exe seed dataset k p n d tolerance complexity distance angle
+        //Thesis.exe seed dataset k p n d tolerance complexity distance angle ratio dbName
         public static void fromArgs(string[] args)
         {
             var count = args.Length;
@@ -51,6 +53,7 @@ namespace Thesis
             if (count > 8) distance = double.Parse(args[8]);
             if (count > 9) angle = double.Parse(args[9]);
             if (count > 10) ratio = double.Parse(args[10]);
+            if (count > 10) dbName = args[11];
         }
 
 

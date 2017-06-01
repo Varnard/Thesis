@@ -20,20 +20,20 @@ namespace Thesis
         static void Main(string[] args)
         {
 
-            //var database = new Database("test4v1.db");
+            Globals.fromArgs(args);
 
-            //var experiment = database.NewExperiment();
+            var database = new Database(Globals.dbName);
+
+            var experiment = database.NewExperiment();
 
 
             Globals.fromArgs(args);
-            //Globals.Save(experiment);
+            Globals.Save(experiment);
 
             Accord.Math.Random.Generator.Seed = Globals.seed;
             DataProvider.Random = MersenneTwister.Instance;
 
-
-
-           // Globals.dataset = "sphere";
+            //Globals.ratio = 2;
 
             MathModel originalModel = null;
 
@@ -59,85 +59,87 @@ namespace Thesis
 
             }
 
-            //var originalModel = Benchmark.getMultipleLines2D();
+            //originalModel = Benchmark.getMultipleLines2D();
 
 
-            Data trainingData = DataProvider.getBenchmarkBalanced(originalModel);
-            Data testData = DataProvider.getBenchmarkBalanced(originalModel);
+            Data trainingData = DataProvider.getBenchmarkBalanced(originalModel, Globals.ratio);
+            Data testData = DataProvider.getTestBenchmark(originalModel);
 
-            Output.PointsToFile("Points/" + Globals.seed + Globals.dataset + Globals.n + "training.txt", trainingData.X);
-            Output.PointsToFile("Points/" + Globals.seed + Globals.dataset + Globals.n + "test.txt", testData.X);
+            ////Output.PointsToFile("Points/" + Globals.seed + Globals.dataset + Globals.n + "training.txt", trainingData.X);
+            ////Output.PointsToFile("Points/" + Globals.seed + Globals.dataset + Globals.n + "test.txt", testData.X);
 
-            //Data trainingData2 = DataProvider.fromFile(originalModel, "Points/" + Globals.seed + Globals.dataset + Globals.n + "training.txt");
-            //Data testData2 = DataProvider.fromFile(originalModel, "Points/" + Globals.seed + Globals.dataset + Globals.n + "test.txt");
+            //Data trainingData = DataProvider.fromFile(originalModel, "Points/" + Globals.seed + Globals.dataset + Globals.n + "training.txt");
+            //Data testData = DataProvider.fromFile(originalModel, "Points/" + Globals.seed + Globals.dataset + Globals.n + "test.txt");
 
+            Process process = Process.GetCurrentProcess();
 
-            //ClusterWizard cluster = new KMeansClusterWizard(trainingData);
+            process.Refresh();
 
-            //Model model = Model.fromCluster(cluster);
-            //var constraints = model.GetMathModel();
+            ClusterWizard cluster = new KMeansClusterWizard(trainingData);
 
-            //var refinedConstraints = Refiner.removeRedundant(constraints);
-            //refinedConstraints = Refiner.mergeSimiliar(refinedConstraints);
+            Model model = Model.fromCluster(cluster);
+            var constraints = model.GetMathModel();
 
-            ////var clusterConstraints = Refiner.cluster(constraints);
-            ////clusterConstraints = Refiner.removeRedundant(clusterConstraints);
+            var refinedConstraints = Refiner.removeRedundant(constraints);
+            refinedConstraints = Refiner.mergeSimiliar(refinedConstraints);
+            
+            var refinedConstraints2 = Refiner.removeRedundant(constraints);
 
-            ////var refinedConstraints = Refiner.mergeSimiliar(constraints);
-            ////var refined2Constraints = Refiner.removeRedundant(refinedConstraints);
+            var time = process.TotalProcessorTime.Milliseconds;
 
-            //refinedConstraints.Save(experiment, "Refined_");
+            experiment.Add("Time", time);
+            experiment.Save();
 
-            ////Console.Out.WriteLine("\nBase: ");
-            ////Output.ToConsole(constraints.Constraints);
+            //var clusterConstraints = Refiner.cluster(constraints);
+            //clusterConstraints = Refiner.removeRedundant(clusterConstraints);
 
-            ////Console.Out.WriteLine("\nRefined: ");
-            ////Output.ToConsole(refinedConstraints.Constraints);
+            refinedConstraints.Save(experiment, "Refined_");
 
+            //var stats = new Statistics(trainingData, model.Decide(trainingData.X));
 
-            ////var stats = new Statistics(trainingData, model.Decide(trainingData.X));
+            ////Console.Out.WriteLine("\nBase Measures: ");
+            ////Console.Out.WriteLine(stats.getMeasures());
+            ////Console.Out.WriteLine("\nContraints: " + model.CountConstraints());
 
-            //////Console.Out.WriteLine("\nBase Measures: ");
-            //////Console.Out.WriteLine(stats.getMeasures());
-            //////Console.Out.WriteLine("\nContraints: " + model.CountConstraints());
-
-            ////stats.save(experiment, "Base_");
-
-
-            //var trainingStats = new Statistics(trainingData, refinedConstraints.Decide(trainingData.X));
-
-            //var testStats = new Statistics(testData, refinedConstraints.Decide(testData.X));
-
-            ////Console.Out.WriteLine("\nRefined Measures: ");
-            ////Console.Out.WriteLine(stats2.getMeasures());
-            ////Console.Out.WriteLine("\nContraints k: " + refinedConstraints.CountConstraints());
-
-            ////var stats3 = new Statistics(data, clusterConstraints.Decide(data.X));
-
-            ////Console.Out.WriteLine("\nClustered Measures: ");
-            ////Console.Out.WriteLine(stats3.getMeasures());
-            ////Console.Out.WriteLine("\nContraints: " + clusterConstraints.CountConstraints());
-
-            //trainingStats.save(experiment, "Training_");
-            //testStats.save(experiment, "Test_");
-
-            ////Console.WriteLine("\nRefiner Classic\n");
-            ////experiment.Add("Comparison_angle",Comparison.CalculateMeanAngle(originalModel, refinedConstraints));
-            ////experiment.Save();
-
-            ////Console.WriteLine("\nRefiner Cluster\n");
-            ////Comparison.CalculateMeanAngle(originalModel, clusterConstraints);
-
-            ////new Visualization()
-            ////    .addModelPlot(cluster, model)
-            ////    .addModelPlot(cluster, refinedConstraints, false)
-            ////    //.addModelPlot(cluster, clusterConstraints, false)
-            ////    .addModelPlot(cluster, originalModel, false)
-            ////    .Show();
+            //stats.save(experiment, "Base_");
 
 
-            //experiment.Dispose();
-            //database.Dispose();
+            var trainingStats = new Statistics(trainingData, refinedConstraints.Decide(trainingData.X));
+
+            var testStats = new Statistics(testData, refinedConstraints.Decide(testData.X));
+
+            //Console.Out.WriteLine("\nRefined Measures: ");
+            //Console.Out.WriteLine(testStats.getMeasures());
+            //Console.Out.WriteLine("\nContraints k: " + refinedConstraints.CountConstraints());
+
+            trainingStats.save(experiment, "Training_");
+            testStats.save(experiment, "Test_");
+
+            double angle = -10000;
+
+            if (Globals.dataset!="sphere")
+            {
+                angle = Comparison.CalculateMeanAngle(originalModel, refinedConstraints);
+            }
+            experiment.Add("Comparison_angle", angle);
+            experiment.Save();
+
+            var testCluster = new SingleClusterWizard(testData);
+
+
+            //new Visualization()
+            //    .addClusters(cluster, "Clusters")
+            //    .addModelPlot(cluster, model, false, "Base model")
+            //    .addModelPlot(cluster, refinedConstraints2, false, "Removed redundant")
+            //    .addModelPlot(cluster, refinedConstraints, false, "Merged similiar")
+            //    .addModelPlot(testCluster, refinedConstraints, false, "Test comparison")
+            //    //.addModelPlot(cluster, clusterConstraints, false)
+            //    .addModelPlot(cluster, originalModel, false, "original")
+            //    .Show();
+
+
+            experiment.Dispose();
+            database.Dispose();
 
             //Console.ReadKey();
         }
