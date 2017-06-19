@@ -30,10 +30,10 @@ namespace Thesis
                 List<bool> results = new List<bool>(); ;
                 foreach (var constraint in Constraints)
                 {
-                    double value = Pow(constraint[0],2);
+                    double value = Pow(constraint[0], 2);
                     for (int j = 0; j < inputs[i].Length; j++)
                     {
-                        value -= Pow(inputs[i][j] * constraint[j + 1],2);
+                        value -= Pow(inputs[i][j] * constraint[j + 1], 2);
                     }
                     results.Add(value > 0);
                 }

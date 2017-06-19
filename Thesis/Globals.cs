@@ -9,7 +9,7 @@ namespace Thesis
 {
     public static class Globals
     {
-         
+
         static public int seed { get; set; } = 2;
         static public int k { get; set; } = 100;
 
@@ -21,8 +21,8 @@ namespace Thesis
         static public double maxVal { get; set; }
         static public double minVal { get; set; }
 
-        static public double tolerance { get; set; } = 0.001;
-        static public double complexity { get; set; } = 0.5;
+        static public double tolerance { get; set; } = 0.1;
+        static public double complexity { get; set; } = 10;
 
         static public double distance { get; set; } = 0.1;
         static public double angle { get; set; } = 15.0;
@@ -31,10 +31,10 @@ namespace Thesis
 
         static public string dbName { get; set; } = "test.db";
 
-        public static void setMinMax(double min, double max) 
+        public static void setMinMax(double min, double max)
         {
             minVal = min;
-            maxVal = max;        
+            maxVal = max;
         }
 
         //Thesis.exe seed dataset k p n d tolerance complexity distance angle ratio dbName

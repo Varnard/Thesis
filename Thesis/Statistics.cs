@@ -109,5 +109,22 @@ namespace Thesis
             experiment.Save();
 
         }
+
+        public void saveFull(Experiment experiment, string title = "")
+        {
+            experiment.Add(title + "Positive_Jaccard_index", Math.Round(posJaccard, 3));
+            experiment.Add(title + "Negative_Jaccard_index", Math.Round(negJaccard, 3));
+            experiment.Add(title + "TP", TP);
+            experiment.Add(title + "FP", FP);
+            experiment.Add(title + "TN", TN);
+            experiment.Add(title + "FN", FN);
+            experiment.Add(title + "Accuracy", Math.Round(getAccuracy(), 3));
+            experiment.Add(title + "Precision", Math.Round(getPrecision(), 3));
+            experiment.Add(title + "Recall", Math.Round(getRecall(), 3));
+            experiment.Add(title + "Specificity", Math.Round(getSpecificity(), 3));
+            experiment.Save();
+
+        }
+
     }
 }

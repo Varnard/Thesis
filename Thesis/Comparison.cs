@@ -35,7 +35,7 @@ namespace Thesis
             {
                 ModelSense = GRB.MINIMIZE,
                 ModelName = "Mean Angle Assignment Problem",
-                
+
             };
 
             model.GetEnv().Set(GRB.IntParam.OutputFlag, 0);
@@ -109,7 +109,7 @@ namespace Thesis
             env.Dispose();
 
             // Return mean angle
-            return (sum / Math.Max(matrix.GetLength(0),matrix.GetLength(1)));
+            return (sum / Math.Max(matrix.GetLength(0), matrix.GetLength(1)));
         }
     }
 }

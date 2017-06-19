@@ -130,8 +130,10 @@ namespace Thesis
 
         public static MathModel cluster(MathModel model)
         {
+            int k = removeRedundant(model).Constraints.Count;
+
             List<double[]> result = new List<double[]>(); 
-            var kmeans = new KMeans(10);
+            var kmeans = new KMeans(k);
 
             kmeans.Distance = new JacDistance();
 

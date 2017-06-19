@@ -17,7 +17,7 @@ namespace Thesis
             output.Add("Variables");
             for (int i = 1; i < featureNumber; i++)
             {
-                output.Add("x" + i +" in [-100,100];");
+                output.Add("x" + i + " in [-100,100];");
             }
             output.Add("Minimize");
             output.Add("x2");
@@ -31,8 +31,8 @@ namespace Thesis
                 for (int i = 1; i < featureNumber; i++)
                 {
                     constraint += (" + " + Math.Round(variables[i], 2) + "*x" + i);
-                }        
-                constraint += ">=0;";                
+                }
+                constraint += ">=0;";
                 output.Add(constraint.Replace(",", "."));
             }
             output.Add("end");
@@ -79,12 +79,12 @@ namespace Thesis
                 return sb.ToString();
             }
         }
-    
-        public static void PointsToFile(String filename,double[][] points)
+
+        public static void PointsToFile(String filename, double[][] points)
         {
 
-            System.IO.File.WriteAllLines(filename, points.Select(p=>string.Join(" ",p.Select(c=>c.ToString("r")).ToArray())).ToArray());
+            System.IO.File.WriteAllLines(filename, points.Select(p => string.Join(" ", p.Select(c => c.ToString("r")).ToArray())).ToArray());
         }
 
-        }
+    }
 }

@@ -48,8 +48,9 @@ namespace Thesis
                 var teacher = new SequentialMinimalOptimization<Linear>()
                 {
                     UseComplexityHeuristic = false,
-                    Strategy = SelectionStrategy.WorstPair
-                                          
+                    Strategy = SelectionStrategy.WorstPair,
+                    WeightRatio = 0.2
+
                 };
 
                 teacher.Complexity = complexity;
@@ -83,7 +84,8 @@ namespace Thesis
                 try
                 {
                     SVM.Add(teacher.Learn(inputs.ToArray(), outputs.ToArray()));
-                } catch (Exception e)
+                }
+                catch (Exception e)
                 {
                     Console.Out.WriteLine(e.Message);
 
@@ -100,7 +102,7 @@ namespace Thesis
                 List<bool> results = new List<bool>(); ;
                 foreach (var classifer in SVM)
                 {
-                    results.Add(classifer.Decide(inputs[i]));                
+                    results.Add(classifer.Decide(inputs[i]));
                 }
                 bool result = true;
 
@@ -121,9 +123,9 @@ namespace Thesis
             return Decide(array)[0];
         }
 
-        public MathModel GetMathModel() 
+        public MathModel GetMathModel()
         {
-            List<double[]> constraints = new List<double[]>();            
+            List<double[]> constraints = new List<double[]>();
 
             foreach (var svm in SVM)
             {
@@ -150,7 +152,7 @@ namespace Thesis
                     constraints.Add(variables);
                 }
             }
-           
+
             return new MathModel(constraints);
         }
 

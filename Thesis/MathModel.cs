@@ -14,7 +14,7 @@ namespace Thesis
 
         public MathModel(List<double[]> constraints)
         {
-            this.Constraints=constraints;
+            this.Constraints = constraints;
         }
 
         public MathModel(double[] constraints)
@@ -29,7 +29,7 @@ namespace Thesis
         {
             this.Constraints = new List<double[]>();
         }
-       
+
 
         public virtual bool[] Decide(double[][] inputs)
         {
@@ -40,12 +40,12 @@ namespace Thesis
                 List<bool> results = new List<bool>(); ;
                 foreach (var constraint in Constraints)
                 {
-                    double value=constraint[0];
+                    double value = constraint[0];
                     for (int j = 0; j < inputs[i].Length; j++)
                     {
                         value += inputs[i][j] * constraint[j + 1];
-                    }                    
-                    results.Add(value>0);
+                    }
+                    results.Add(value > 0);
                 }
                 bool result = true;
 
@@ -71,10 +71,10 @@ namespace Thesis
             return Constraints.Count;
         }
 
-        public void Save(Experiment experiment, string title="")
+        public void Save(Experiment experiment, string title = "")
         {
-            experiment.Add(title+"constraint_count", CountConstraints());
-            experiment.Add(title+"constraints", Output.ToString(Constraints));
+            experiment.Add(title + "constraint_count", CountConstraints());
+            experiment.Add(title + "constraints", Output.ToString(Constraints));
             experiment.Save();
         }
     }

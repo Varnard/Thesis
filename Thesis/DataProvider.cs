@@ -45,9 +45,10 @@ namespace Thesis
             return new Data(X, Y);
         }
 
-        public static Data getBenchmarkBalanced(MathModel benchmark, double ratio = 1)
+        public static Data getBenchmarkBalanced(MathModel benchmark)
         {
             int p = Globals.p;
+            double ratio = Globals.ratio;
 
             double[][] X = new double[p][];
 
@@ -107,11 +108,30 @@ namespace Thesis
 
             int[] Y = new int[p];
 
-            for (int i = 0; i < p; i++)
+            int pc = 0;
+            int nc = 0;
+
+            int i = 0;
+
+            for (int j = 0; j < 1000; j++)
             {
-                X[i] = points[i];
-                if (benchmark.Decide(points[i])) Y[i] = 1;
+                if (benchmark.Decide(points[j]) && pc<p/2)
+                {
+                    X[i] = points[j];
+                    Y[i] = 1;
+                    pc++;
+                    i++;
+                } 
+                else if (nc<p/2)
+                {
+                    X[i] = points[j];
+                    Y[i] = 0;
+                    nc++;
+                    i++;
+                }
             }
+
+
 
             return new Data(X, Y);
         }
@@ -121,7 +141,7 @@ namespace Thesis
         {
             if (refPoints == null)
             {
-                int p = 1000;
+                int p = 10000;
 
                 double[][] X = getPoints(p);
 

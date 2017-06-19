@@ -16,15 +16,36 @@ namespace Thesis
 
             double d = Globals.d;
 
-            constraints.Add(new double[]{d*0.7,1,0.001});
+            constraints.Add(new double[] { d * 0.7, 1, 0.001 });
 
-            constraints.Add(new double[]{d/2,0.7,0.5});
+            constraints.Add(new double[] { d / 2, 0.7, 0.5 });
 
-            constraints.Add(new double[]{d,0,1});
+            constraints.Add(new double[] { d, 0, 1 });
 
-            constraints.Add(new double[]{d,-0.5,0.3});
+            constraints.Add(new double[] { d, -0.5, 0.3 });
 
-            constraints.Add(new double[]{2*d,0.5,-2.3});
+            constraints.Add(new double[] { 2 * d, 0.5, -2.3 });
+
+            return new MathModel(constraints);
+        }
+
+        public static MathModel getFlach13()
+        {
+            Globals.n = 2;
+
+            var constraints = new List<double[]>();
+
+            double d = Globals.d;
+
+            constraints.Add(new double[] { d * 0.7, 1, 0.001 });
+
+            constraints.Add(new double[] { d / 2, 0.7, 0.5 });
+
+            constraints.Add(new double[] { d, 0, 1 });
+
+            constraints.Add(new double[] { d, -0.5, 0.3 });
+
+            constraints.Add(new double[] { 2 * d, 0.5, -2.3 });
 
             return new MathModel(constraints);
         }
@@ -37,8 +58,8 @@ namespace Thesis
             const1[0] = Globals.d;
 
             for (int i = 1; i <= Globals.n; i++)
-            {                
-                const1[i] = 1;                
+            {
+                const1[i] = 1;
             }
 
             constraints.Add(const1);
@@ -52,14 +73,14 @@ namespace Thesis
 
             var constraints = new List<double[]>();
 
-            for (int i=1;i<=Globals.n;i++)
+            for (int i = 1; i <= Globals.n; i++)
             {
-                var const1 = new double[Globals.n+1];
-                var const2 = new double[Globals.n+1];
+                var const1 = new double[Globals.n + 1];
+                var const2 = new double[Globals.n + 1];
 
                 const1[i] = 1;
 
-                const2[0] = Globals.d;    
+                const2[0] = Globals.d;
                 const2[i] = -1;
 
                 constraints.Add(const1);
@@ -71,7 +92,7 @@ namespace Thesis
 
         public static SphereModel getHyperSphere()
         {
-            Globals.setMinMax(-2*Globals.d, 2 * Globals.d);
+            Globals.setMinMax(-2 * Globals.d, 2 * Globals.d);
 
             var constraints = new List<double[]>();
 
@@ -95,7 +116,7 @@ namespace Thesis
             var constraints = new List<double[]>();
 
             double tg = Math.Tan(Math.PI / 12);
-            double ctg = 1/(Math.Tan(Math.PI / 12));
+            double ctg = 1 / (Math.Tan(Math.PI / 12));
 
             for (int i = 1; i < Globals.n; i++)
             {
@@ -104,14 +125,14 @@ namespace Thesis
 
                 const1[i] = ctg;
                 const1[i + 1] = -tg;
-                const2[i+1] = ctg;
+                const2[i + 1] = ctg;
                 const2[i] = -tg;
 
                 constraints.Add(const1);
                 constraints.Add(const2);
             }
 
-            
+
 
             if (Globals.n > 2)
             {
@@ -132,7 +153,7 @@ namespace Thesis
 
             for (int i = 0; i < Globals.n; i++)
             {
-                const0[i+1] = -1;   
+                const0[i + 1] = -1;
             }
 
             constraints.Add(const0);

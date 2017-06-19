@@ -24,7 +24,7 @@ namespace Thesis
         public override List<double[][]> clusterNegatives()
         {
             if (negatives.Length < k) k = negatives.Length - 1;
-            
+
             KMeans kmeans = new KMeans(k);
 
             List<double[]>[] clusterArray = new List<double[]>[k];
