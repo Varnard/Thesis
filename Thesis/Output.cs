@@ -17,7 +17,7 @@ namespace Thesis
             output.Add("Variables");
             for (int i = 1; i < featureNumber; i++)
             {
-                output.Add("x" + i + " in [-100,100];");
+                output.Add("x" + i + " in ["+Globals.minVal+","+Globals.maxVal+"];");
             }
             output.Add("Minimize");
             output.Add("x2");

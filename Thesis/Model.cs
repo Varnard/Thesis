@@ -78,6 +78,8 @@ namespace Thesis
                 for (int i = 0; i < decisions.Length; i++)
                 {
                     if (decisions[i]) answers[i] = 1;
+
+
                     else answers[i] = -1;
                 }
 

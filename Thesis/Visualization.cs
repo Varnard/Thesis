@@ -71,10 +71,10 @@ namespace Thesis
 
             var clustersAxis = new RangeColorAxis { Key = "clustersColors" };
             clustersAxis.AddRange(0, 0.1, OxyColors.Red);
-            clustersAxis.AddRange(1, 1.1, OxyColors.Orange);
-            clustersAxis.AddRange(2, 2.1, OxyColors.OrangeRed);
-            clustersAxis.AddRange(3, 3.1, OxyColors.DarkOrange);
-            clustersAxis.AddRange(4, 4.1, OxyColors.DarkRed);
+            clustersAxis.AddRange(2, 2.1, OxyColors.Orange);
+            clustersAxis.AddRange(1, 1.1, OxyColors.OrangeRed);
+            clustersAxis.AddRange(3, 3.1, OxyColors.DarkRed);
+            clustersAxis.AddRange(4, 4.1, OxyColors.DarkOrange);
             clustersAxis.AddRange(5, 5.1, OxyColors.IndianRed);
 
             plot.Model.Axes.Add(zeroOneAxis);
