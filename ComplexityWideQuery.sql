@@ -1,4 +1,0 @@
-SELECT Complexity,AVG(experiments.Positive_Jaccard_index),AVG(experiments.Negative_Jaccard_index) from experiments where experiments.Complexity=0.0005 and id>400 UNION
-SELECT Complexity,AVG(experiments.Positive_Jaccard_index),AVG(experiments.Negative_Jaccard_index) from experiments where experiments.Complexity=0.005 and id>400 UNION
-SELECT Complexity,AVG(experiments.Positive_Jaccard_index),AVG(experiments.Negative_Jaccard_index) from experiments where experiments.Complexity=0.05 and id>400 UNION
-SELECT Complexity,AVG(experiments.Positive_Jaccard_index),AVG(experiments.Negative_Jaccard_index) from experiments where experiments.Complexity=0.5 and id>400
