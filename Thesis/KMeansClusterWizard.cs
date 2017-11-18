@@ -21,6 +21,17 @@ namespace Thesis
             this.k = Globals.k;
         }
 
+        public KMeansClusterWizard(double[][] positives, double[][] negatives) : base(positives, negatives)
+        {
+            this.k = Globals.k;
+        }
+
+        public KMeansClusterWizard(double[][] positives, double[][] negatives, int k) : base(positives, negatives)
+        {
+            this.k = k;
+        }
+
+
         public override List<double[][]> clusterNegatives()
         {
             if (negatives.Length < k) k = negatives.Length - 1;

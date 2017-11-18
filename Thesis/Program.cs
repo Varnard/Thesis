@@ -57,8 +57,9 @@ namespace Thesis
 
             Data uniformTestData = DataProvider.getTestBenchmark(originalModel);
 
-            Data trainingData = DataProvider.fromFile(originalModel, "Points/" + Globals.seed + Globals.dataset + Globals.n + "training.txt");
-            Data ratioedTestData = DataProvider.fromFile(originalModel, "Points/" + Globals.seed + Globals.dataset + Globals.n + "test.txt");
+            //Data trainingData = DataProvider.fromFile(originalModel, "Points/" + Globals.seed + Globals.dataset + Globals.n + "training.txt");
+            Data trainingData = DataProvider.getBenchmark(originalModel);
+            //Data ratioedTestData = DataProvider.fromFile(originalModel, "Points/" + Globals.seed + Globals.dataset + Globals.n + "test.txt");
 
             Process process = Process.GetCurrentProcess();
 
@@ -91,27 +92,18 @@ namespace Thesis
             var trainingStats = new Statistics(trainingData, refinedConstraints.Decide(trainingData.X));
 
             var uniformTestStats = new Statistics(uniformTestData, refinedConstraints.Decide(uniformTestData.X));
-            var ratioedTestStats = new Statistics(ratioedTestData, refinedConstraints.Decide(ratioedTestData.X));
+            //var ratioedTestStats = new Statistics(ratioedTestData, refinedConstraints.Decide(ratioedTestData.X));
 
             trainingStats.save(experiment, "Training_");
             uniformTestStats.saveFull(experiment, "U_Test_");
-            ratioedTestStats.saveFull(experiment, "R_Test_");
+            //ratioedTestStats.saveFull(experiment, "R_Test_");
 
-            double angle = -10000;
-
-            if (Globals.dataset != "sphere")
-            {
-                try {
-                    angle = Comparison.CalculateMeanAngle(originalModel, refinedConstraints);
-                } catch (Exception e)
-                {
-                    angle = -500000;
-                }
-               
-            }
-            experiment.Add("Comparison_angle", angle);
             experiment.Save();
 
+            new Visualization()
+                .addClusters(cluster,"Clusters")
+                .addModelPlot(cluster, refinedConstraints, "Model")
+                .Show();
  
             experiment.Dispose();
             database.Dispose();

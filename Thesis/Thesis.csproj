@@ -159,6 +159,7 @@
     <Compile Include="SphereModel.cs" />
     <Compile Include="Statistics.cs" />
     <Compile Include="Visualization.cs" />
+    <Compile Include="XMeansCluster.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
